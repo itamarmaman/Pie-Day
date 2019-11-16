@@ -3,10 +3,10 @@ import logo from './logo.svg';
 import './App.css';
 import SelectGroup from './SelectGroup'
 import Header from './Header';
-import AnswerOriginalQuestion from './AnswerOriginalQuestion'
+import QuestionForm from './QuestionForm'
 
 export default function App() {
-  const [groupNum, setGroupNum] = useState();
+  const [groupNum, setGroupNum] = useState(new URLSearchParams(window.location.search).get("team"));
   const [showSuccsesNotification, setShowSuccsesNotification] = useState(false);
   const [legIndex, setLegIndex] = useState(0);
   const teamsArray = {
@@ -30,26 +30,35 @@ export default function App() {
     ]
   }
   const onGN = (x) => setGroupNum(x)
-  function onCorrectAnswer() {
+  
+  function onOrginalCorrectAnswer() {
     setShowSuccsesNotification(true)
-    setTimeout(() => setShowSuccsesNotification(false), 1000)
+    setTimeout(() => setShowSuccsesNotification(false), 2000)
     setLegIndex(legIndex+1)
   }
+  function onAlternateCorrectAnswer() {
+    setShowSuccsesNotification(true)
+    setTimeout(() => setShowSuccsesNotification(false), 2000)
+    setLegIndex(legIndex+1)
+  }
+  function onSkipingQuestion() {
+    setLegIndex(legIndex+1)
+  }
+  
 
-
-  if (!groupNum) 
-  return (
-    
-    <div className="App">
-      <SelectGroup onGroupNum = {onGN} ></SelectGroup>
-    </div>
-  ); 
-  return (
-    
+  if (!groupNum) {
+    return (
+      <div className="App">
+        <SelectGroup onGroupNum = {onGN} ></SelectGroup>
+      </div>
+  );
+  }
+  return ( 
     <div className="App">
       <Header groupNum = {groupNum}></Header>
       {showSuccsesNotification ? <div>Congratolations! Thats the right answer</div> : null}
-      <AnswerOriginalQuestion leg = {teamsArray[groupNum][legIndex]} onCorrectAnswer = {onCorrectAnswer}></AnswerOriginalQuestion>
+      <QuestionForm leg = {teamsArray[groupNum][legIndex]} onOrginalCorrectAnswer = {onOrginalCorrectAnswer} onAlternateCorrectAnswer = {onAlternateCorrectAnswer} onSkipingQuestion = {onSkipingQuestion}></QuestionForm>
     </div>
-  );
+  )
+
 }
