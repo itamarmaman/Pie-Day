@@ -9,6 +9,7 @@ export default function App() {
   const [groupNum, setGroupNum] = useState(new URLSearchParams(window.location.search).get("team"));
   const [showSuccsesNotification, setShowSuccsesNotification] = useState(false);
   const [legIndex, setLegIndex] = useState(0);
+  const [progress, setProgress] = useState([1,1,2,3,0,0,0,0,0,0]);
   const teamsArray = {
     1: [
       {
@@ -32,16 +33,19 @@ export default function App() {
   const onGN = (x) => setGroupNum(x)
   
   function onOrginalCorrectAnswer() {
+    setProgress(progress[legIndex] = 3)
     setShowSuccsesNotification(true)
     setTimeout(() => setShowSuccsesNotification(false), 2000)
     setLegIndex(legIndex+1)
   }
   function onAlternateCorrectAnswer() {
+    setProgress(progress[legIndex] = 2)
     setShowSuccsesNotification(true)
     setTimeout(() => setShowSuccsesNotification(false), 2000)
     setLegIndex(legIndex+1)
   }
   function onSkipingQuestion() {
+    setProgress(progress[legIndex] = 1)
     setLegIndex(legIndex+1)
   }
   
@@ -55,7 +59,7 @@ export default function App() {
   }
   return ( 
     <div className="App">
-      <Header groupNum = {groupNum}></Header>
+      <Header groupNum = {groupNum} progress= {progress}></Header>
       {showSuccsesNotification ? <div>Congratolations! Thats the right answer</div> : null}
       <QuestionForm leg = {teamsArray[groupNum][legIndex]} onOrginalCorrectAnswer = {onOrginalCorrectAnswer} onAlternateCorrectAnswer = {onAlternateCorrectAnswer} onSkipingQuestion = {onSkipingQuestion}></QuestionForm>
     </div>

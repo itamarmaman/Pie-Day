@@ -11,3 +11,15 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+/* .success .progress-marker::before  { 
+  background-color: green !important;
+} */
+
+.failure .progress-marker::before  { 
+  background-color: red !important;
+}
+
+.alternative .progress-marker::before  { 
+  background-color: yellow !important;
+}
