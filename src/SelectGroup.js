@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
 export default function SelectGroup({onGroupNum}) {
-  const [groupNum, setGroupNum] = useState();
+  const [groupNum, setGroupNum] = useState('');
 
   return (
     <div>
