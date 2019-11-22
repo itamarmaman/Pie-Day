@@ -9,7 +9,7 @@ export default function App() {
   const [groupNum, setGroupNum] = useState(new URLSearchParams(window.location.search).get("team"));
   const [showSuccsesNotification, setShowSuccsesNotification] = useState(false);
   const [legIndex, setLegIndex] = useState(0);
-  const [progress, setProgress] = useState([1,1,2,3,0,0,0,0,0,0]);
+  const [progress, setProgress] = useState([0,0,0,0,0,0,0,0,0,0]);
   const teamsArray = {
     1: [
       {
@@ -59,7 +59,7 @@ export default function App() {
   }
   return ( 
     <div className="App">
-      <Header groupNum = {groupNum} progress= {progress}></Header>
+      <Header groupNum = {groupNum} progress = {progress}></Header>
       {showSuccsesNotification ? <div>Congratolations! Thats the right answer</div> : null}
       <QuestionForm leg = {teamsArray[groupNum][legIndex]} onOrginalCorrectAnswer = {onOrginalCorrectAnswer} onAlternateCorrectAnswer = {onAlternateCorrectAnswer} onSkipingQuestion = {onSkipingQuestion}></QuestionForm>
     </div>

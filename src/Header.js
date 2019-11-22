@@ -23,16 +23,15 @@ export default function Header({groupNum, progress}) {
   
   return (
     <div>
-      <h3>Hello group number {groupNum}!</h3>
       <ul class="progress-tracker">
-
-      {progress.map((step,index) => <li className={getStatus(step, index)} >
-          <div className="progress-marker" data-text={getText(step, index)}> </div>
-          </li>)
-      }
-
-
+        {progress.map((step,index) => 
+          <li className={getStatus(step, index)} >
+            <div className="progress-marker" data-text={getText(step, index)}> </div>
+            </li>)
+        }
         </ul>
+
+        <h3>Hello group number {groupNum}!</h3>
     </div>
   );
 }
