@@ -1,15 +1,16 @@
 import React, { useState } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import SelectGroup from './SelectGroup'
 import Header from './Header';
 import QuestionForm from './QuestionForm'
+import Win from './Win'
 
 export default function App() {
   const [groupNum, setGroupNum] = useState(new URLSearchParams(window.location.search).get("team"));
   const [showSuccsesNotification, setShowSuccsesNotification] = useState(false);
   const [legIndex, setLegIndex] = useState(0);
   const [progress, setProgress] = useState([0,0,0,0,0,0,0,0,0,0]);
+  const [finished, setFinished] = useState(false);
   const teamsArray = {
     1: [
       {
@@ -30,30 +31,43 @@ export default function App() {
 
     ]
   }
-  const onGN = (x) => setGroupNum(x)
   
+  function onGN(x) {
+    setGroupNum(x)
+  }
+  function moveToNextLeg() {
+    if (legIndex === teamsArray[groupNum].length - 1)
+    {
+      setFinished(true)
+      return
+    } 
+    setLegIndex(legIndex+1)
+  }
+
   function onOrginalCorrectAnswer() {
-    setProgress(progress[legIndex] = 3)
+    progress[legIndex] = 3
+    setProgress(progress)
     setShowSuccsesNotification(true)
     setTimeout(() => setShowSuccsesNotification(false), 2000)
-    setLegIndex(legIndex+1)
+    moveToNextLeg()
   }
   function onAlternateCorrectAnswer() {
-    setProgress(progress[legIndex] = 2)
+    progress[legIndex] = 2
+    setProgress(progress)
     setShowSuccsesNotification(true)
     setTimeout(() => setShowSuccsesNotification(false), 2000)
-    setLegIndex(legIndex+1)
+    moveToNextLeg()
   }
   function onSkipingQuestion() {
-    setProgress(progress[legIndex] = 1)
-    setLegIndex(legIndex+1)
+    progress[legIndex] = 1
+    setProgress(progress)
+    moveToNextLeg()
   }
   
-
   if (!groupNum) {
     return (
       <div className="App">
-        <SelectGroup onGroupNum = {onGN} ></SelectGroup>
+        <SelectGroup onGroupNum = {onGN}></SelectGroup>
       </div>
   );
   }
@@ -61,8 +75,9 @@ export default function App() {
     <div className="App">
       <Header groupNum = {groupNum} progress = {progress}></Header>
       {showSuccsesNotification ? <div>Congratolations! Thats the right answer</div> : null}
-      <QuestionForm leg = {teamsArray[groupNum][legIndex]} onOrginalCorrectAnswer = {onOrginalCorrectAnswer} onAlternateCorrectAnswer = {onAlternateCorrectAnswer} onSkipingQuestion = {onSkipingQuestion}></QuestionForm>
+      {!finished ? 
+        <QuestionForm leg = {teamsArray[groupNum][legIndex]} onOrginalCorrectAnswer = {onOrginalCorrectAnswer} onAlternateCorrectAnswer = {onAlternateCorrectAnswer} onSkipingQuestion = {onSkipingQuestion}></QuestionForm> 
+        : <Win></Win>}
     </div>
   )
-
 }

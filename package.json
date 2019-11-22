@@ -6,8 +6,10 @@
     "node-sass": "^4.13.0",
     "progress-tracker": "^2.0.5",
     "react": "^16.11.0",
+    "react-confetti": "^5.0.1",
     "react-dom": "^16.11.0",
-    "react-scripts": "3.2.0"
+    "react-scripts": "3.2.0",
+    "react-use": "^13.8.1"
   },
   "scripts": {
     "start": "react-scripts start",

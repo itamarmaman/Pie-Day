@@ -33,7 +33,7 @@ export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingTo
       <h3>You are wrong</h3>
       <br></br>
       <button onClick = {() => tryingAgain()}>Try Again</button>
-  <button onClick = {() => {onMovingToAlternate()}}>Switch question</button>
+      <button onClick = {() => {onMovingToAlternate()}}>Switch question</button>
       <h3>Remember: Switching question is allways worse than answaring on the original one</h3>
     </div>
   )
