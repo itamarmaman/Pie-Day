@@ -25,6 +25,18 @@ class Firebase {
   TIMESTAMP() {
     return app.firestore.FieldValue.serverTimestamp();
   }
+
+  getLatestEventForGroup(groupNum, cb) {
+      console.log("in getLatestEventForGroup ", groupNum)
+    var event = this.db.collection("events").where('groupNum', '==', "" + groupNum).orderBy("creationTime", 'desc').limit(1).get()
+    .then(function (querySnapshot) {
+        console.log( "got replay back "+querySnapshot.size);
+    querySnapshot.forEach(function (doc) {
+        cb(doc.data());
+    });
+});
+  }
 }
+
 
 export default Firebase;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import SelectGroup from './SelectGroup'
 import Header from './Header';
@@ -17,7 +17,7 @@ export default function App({firebase}) {
     messagingSenderId: "315194400949",
     appId: "1:315194400949:web:3a7013eeb1884d43a11efc"
   };
-  const [groupNum, setGroupNum] = useState(new URLSearchParams(window.location.search).get("team"));
+  const [groupNum, setGroupNum] = useState(null);
   const [showSuccsesNotification, setShowSuccsesNotification] = useState(false);
   const [legIndex, setLegIndex] = useState(0);
   const [progress, setProgress] = useState([0,0,0,0,0,0,0,0,0,0]);
@@ -52,19 +52,29 @@ export default function App({firebase}) {
   
   function onGN(x) {
     setGroupNum(x)
+    firebase.getLatestEventForGroup(x, (event) => {
+      console.log("event ", event)
+      setProgress(event.progress)
+      setFinished(event.finish)
+      setLegIndex(Math.min(event.legIndex, teamsArray[x].length - 1))
+    })
+  }
+
+  // useEffect(() => {
+  //   onGN(new URLSearchParams(window.location.search).get("team"))
+  // });
+
+  function hasNextLeg() {
+    return legIndex < teamsArray[groupNum].length - 1;
   }
 
   function moveToNextLeg() {
-    if (legIndex === teamsArray[groupNum].length - 1)
-    {
-      setFinished(true)
-      return
-    } 
-    setLegIndex(legIndex+1)
+
       firebase.events().add({
         groupNum: groupNum,
-        legIndex: legIndex, 
+        legIndex: Math.min(legIndex+1, teamsArray[groupNum].length - 1), 
         progress: progress,
+        finish: !hasNextLeg(),
         creationTime: firebase.TIMESTAMP() })
     .then(function(docRef) {
         console.log("Document written with ID: ", docRef.id);
@@ -72,7 +82,13 @@ export default function App({firebase}) {
     .catch(function(error) {
         console.error("Error adding document: ", error);
     });
-    
+    if (!hasNextLeg)
+    {
+      setFinished(true)
+      return
+    } 
+    setLegIndex(legIndex+1)
+
   }
 
   function onOrginalCorrectAnswer() {
@@ -90,6 +106,7 @@ export default function App({firebase}) {
     moveToNextLeg()
   }
   function onSkipingQuestion() {
+    console.log("skiping")
     progress[legIndex] = 1
     setProgress(progress)
     moveToNextLeg()
