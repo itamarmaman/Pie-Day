@@ -4,6 +4,7 @@ import SelectGroup from './SelectGroup'
 import Header from './Header';
 import QuestionForm from './QuestionForm'
 import Win from './Win'
+import OnlineStatus from './OnlineStatus'
 const firebase = require("firebase");
 require("firebase/firestore");
 
@@ -18,16 +19,22 @@ export default function App() {
     messagingSenderId: "315194400949",
     appId: "1:315194400949:web:3a7013eeb1884d43a11efc"
   };
-  firebase.initializeApp(firebaseConfig);
+  // firebase.initializeApp(firebaseConfig);
 
-
-  var db = firebase.firestore();
+  // var db = firebase.firestore();
 
   const [groupNum, setGroupNum] = useState(new URLSearchParams(window.location.search).get("team"));
   const [showSuccsesNotification, setShowSuccsesNotification] = useState(false);
   const [legIndex, setLegIndex] = useState(0);
   const [progress, setProgress] = useState([0,0,0,0,0,0,0,0,0,0]);
   const [finished, setFinished] = useState(false);
+  const [liatURL, setLiatURL] = useState(new URLSearchParams(window.location.search).has("liat"));  
+
+  const progressArray = {
+    1: [3,3,2,1,1,0,0,0,0,0],
+    2: [2,2,3,3,3,1,0,0,0,0],
+    3: [1,1,3,3,3,3,3,0,0,0]
+  }
   const teamsArray = {
     1: [
       {
@@ -60,16 +67,16 @@ export default function App() {
       return
     } 
     setLegIndex(legIndex+1)
-      db.collection("events").add({
-        groupNum: groupNum,
-        legIndex: legIndex, 
-        progress: progress })
-    .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
-    })
-    .catch(function(error) {
-        console.error("Error adding document: ", error);
-    });
+      // db.collection("events").add({
+      //   groupNum: groupNum,
+      //   legIndex: legIndex, 
+      //   progress: progress })
+    // .then(function(docRef) {
+    //     console.log("Document written with ID: ", docRef.id);
+    // })
+    // .catch(function(error) {
+    //     console.error("Error adding document: ", error);
+    // });
     
   }
 
@@ -93,6 +100,9 @@ export default function App() {
     moveToNextLeg()
   }
 
+  if (liatURL) {
+     return <OnlineStatus progressArray = {progressArray}></OnlineStatus>
+  }
   if (!groupNum) {
     return (
       <div className="App">
