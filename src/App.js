@@ -51,6 +51,8 @@ export default function App({firebase}) {
   }
   
   function onGN(x) {
+    if (x==groupNum) return;
+    console.log("GN ", x)
     setGroupNum(x)
     firebase.getLatestEventForGroup(x, (event) => {
       console.log("event ", event)
@@ -60,9 +62,14 @@ export default function App({firebase}) {
     })
   }
 
-  // useEffect(() => {
-  //   onGN(new URLSearchParams(window.location.search).get("team"))
-  // });
+  
+  useEffect(() => {
+    const param = new URLSearchParams(window.location.search).get("team");
+    console.log("in useEffect ", param)
+    if (param) {
+      onGN(param)
+    }
+  }, [groupNum]);
 
   function hasNextLeg() {
     return legIndex < teamsArray[groupNum].length - 1;
