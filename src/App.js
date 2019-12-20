@@ -6,8 +6,8 @@ import QuestionForm from './QuestionForm'
 import Win from './Win'
 import OnlineStatus from './OnlineStatus'
 
-export default function App({firebase}) {
-  
+export default function App({ firebase }) {
+
   var firebaseConfig = {
     apiKey: "AIzaSyCWxLs3JddONlH7i2sDuS8snXAYj5idgsc",
     authDomain: "pie-day-91621.firebaseapp.com",
@@ -20,49 +20,90 @@ export default function App({firebase}) {
   const [groupNum, setGroupNum] = useState(null);
   const [showSuccsesNotification, setShowSuccsesNotification] = useState(false);
   const [legIndex, setLegIndex] = useState(0);
-  const [progress, setProgress] = useState([0,0,0,0,0,0,0,0,0,0]);
+  const [progress, setProgress] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [finished, setFinished] = useState(false);
-  const [liatURL, setLiatURL] = useState(new URLSearchParams(window.location.search).has("liat"));  
+  const [liatURL, setLiatURL] = useState(new URLSearchParams(window.location.search).has("liat"));
 
   const progressArray = {
-    1: [3,3,2,1,1,0,0,0,0,0],
-    2: [2,2,3,3,3,1,0,0,0,0],
-    3: [1,1,3,3,3,3,3,0,0,0]
+    1: [3, 3, 2, 1, 1, 0, 0, 0, 0, 0],
+    2: [2, 2, 3, 3, 3, 1, 0, 0, 0, 0],
+    3: [1, 1, 3, 3, 3, 3, 3, 0, 0, 0]
   }
   const teamsArray = {
     1: [
       {
         questionId: 67,
         alternateQuestionId: 167,
-        answerCode: "ABXD"  
+        answerCode: "ABXD"
       },
       {
         questionId: 34,
         alternateQuestionId: 134,
-        answerCode: "XYSAR"  
+        answerCode: "XYSAR"
       },
       {
         questionId: 19,
         alternateQuestionId: 119,
-        answerCode: "ITAMAR_RUELLZZZ!!!!1"  
+        answerCode: "ITAMAR_RUELLZZZ!!!!1"
+      },
+
+    ],
+    2: [
+      {
+        questionId: 67,
+        alternateQuestionId: 167,
+        answerCode: "ABXD"
+      },
+      {
+        questionId: 34,
+        alternateQuestionId: 134,
+        answerCode: "XYSAR"
+      },
+      {
+        questionId: 19,
+        alternateQuestionId: 119,
+        answerCode: "ITAMAR_RUELLZZZ!!!!1"
       },
 
     ]
   }
-  
-  function onGN(x) {
-    if (x==groupNum) return;
+
+  async function onGN(x) {
+    if (x == groupNum) return;
     console.log("GN ", x)
     setGroupNum(x)
-    firebase.getLatestEventForGroup(x, (event) => {
+
+
+    const querySnapShot = await firebase.getLatestEventForGroup(x)
+    
+    if (querySnapShot == null) {
+      console.log("sending init event for group ", x)
+      firebase.events().add({
+        groupNum: x,
+        legIndex: 0,
+        progress: progress,
+        finish: false,
+        creationTime: firebase.TIMESTAMP()
+      })
+        .then(function (docRef) {
+          console.log("Document written with ID: ", docRef.id);
+        })
+        .catch(function (error) {
+          console.error("Error adding document: ", error);
+        });
+
+    } else {
+
+      const event = querySnapShot.docs[0].data()
+
       console.log("event ", event)
       setProgress(event.progress)
       setFinished(event.finish)
-      setLegIndex(Math.min(event.legIndex, teamsArray[x].length - 1))
-    })
+      setLegIndex(event.legIndex)
+    }
   }
 
-  
+
   useEffect(() => {
     const param = new URLSearchParams(window.location.search).get("team");
     console.log("in useEffect ", param)
@@ -77,24 +118,24 @@ export default function App({firebase}) {
 
   function moveToNextLeg() {
 
-      firebase.events().add({
-        groupNum: groupNum,
-        legIndex: Math.min(legIndex+1, teamsArray[groupNum].length - 1), 
-        progress: progress,
-        finish: !hasNextLeg(),
-        creationTime: firebase.TIMESTAMP() })
-    .then(function(docRef) {
-        console.log("Document written with ID: ", docRef.id);
+    firebase.events().add({
+      groupNum: groupNum,
+      legIndex: legIndex + 1,
+      progress: progress,
+      finish: !hasNextLeg(),
+      creationTime: firebase.TIMESTAMP()
     })
-    .catch(function(error) {
+      .then(function (docRef) {
+        console.log("Document written with ID: ", docRef.id);
+      })
+      .catch(function (error) {
         console.error("Error adding document: ", error);
-    });
-    if (!hasNextLeg)
-    {
+      });
+    if (!hasNextLeg()) {
       setFinished(true)
       return
-    } 
-    setLegIndex(legIndex+1)
+    }
+    setLegIndex(legIndex + 1)
 
   }
 
@@ -120,21 +161,21 @@ export default function App({firebase}) {
   }
 
   if (liatURL) {
-     return <OnlineStatus progressArray = {progressArray}></OnlineStatus>
+    return <OnlineStatus teamsArray={teamsArray} firebase={firebase}></OnlineStatus>
   }
   if (!groupNum) {
     return (
       <div className="App">
-        <SelectGroup onGroupNum = {onGN}></SelectGroup>
+        <SelectGroup onGroupNum={onGN}></SelectGroup>
       </div>
-  );
+    );
   }
-  return ( 
+  return (
     <div className="App">
-      <Header groupNum = {groupNum} progress = {progress}></Header>
+      <Header groupNum={groupNum} progress={progress}></Header>
       {showSuccsesNotification ? <div>Congratolations! Thats the right answer</div> : null}
-      {!finished ? 
-        <QuestionForm leg = {teamsArray[groupNum][legIndex]} onOrginalCorrectAnswer = {onOrginalCorrectAnswer} onAlternateCorrectAnswer = {onAlternateCorrectAnswer} onSkipingQuestion = {onSkipingQuestion}></QuestionForm> 
+      {!finished ?
+        <QuestionForm leg={teamsArray[groupNum][legIndex]} onOrginalCorrectAnswer={onOrginalCorrectAnswer} onAlternateCorrectAnswer={onAlternateCorrectAnswer} onSkipingQuestion={onSkipingQuestion}></QuestionForm>
         : <Win></Win>}
     </div>
   )

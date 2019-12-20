@@ -3,6 +3,7 @@ import "../node_modules/progress-tracker/src/styles/progress-tracker.scss";
 
 export default function Progress({progress}) {
 
+  console.log("in progres", progress)
   function getText(step, index) {
     switch (step) {
       case 0: return index + 1

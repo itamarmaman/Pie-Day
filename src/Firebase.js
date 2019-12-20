@@ -26,15 +26,17 @@ class Firebase {
     return app.firestore.FieldValue.serverTimestamp();
   }
 
-  getLatestEventForGroup(groupNum, cb) {
+  getLatestEventForGroup(groupNum) {
       console.log("in getLatestEventForGroup ", groupNum)
-    var event = this.db.collection("events").where('groupNum', '==', "" + groupNum).orderBy("creationTime", 'desc').limit(1).get()
+    return this.db.collection("events").where('groupNum', '==', "" + groupNum).orderBy("legIndex", 'desc').limit(1).get()
     .then(function (querySnapshot) {
         console.log( "got replay back "+querySnapshot.size);
-    querySnapshot.forEach(function (doc) {
-        cb(doc.data());
-    });
-});
+        if (querySnapshot.size === 0) {
+         return null;
+        }    
+      return querySnapshot;
+
+      }).catch((e) => {console.log("eror in getLatestEventForGroup", e)})
   }
 }
 
