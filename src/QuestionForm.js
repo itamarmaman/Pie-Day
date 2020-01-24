@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AnswerOriginalQuestion from './AnswerOriginalQuestion'
 import AnswerAlternateQuestion from './AnswerAlternateQuestion'
 
-export default function QuestionForm({leg, onOrginalCorrectAnswer, onAlternateCorrectAnswer, onSkipingQuestion}) {
+export default function QuestionForm({leg, onOrginalCorrectAnswer, onAlternateCorrectAnswer, onSkipingQuestion, uploadImage}) {
   
   const [questionType, onQuestionType] = useState(true)
   
@@ -20,14 +20,25 @@ export default function QuestionForm({leg, onOrginalCorrectAnswer, onAlternateCo
   if (questionType) {
     return (
       <div>
-        <AnswerOriginalQuestion leg = {leg} onCorrectAnswer = {onOrginalCorrectAnswer} onMovingToAlternate = {onMovingToAlternate}></AnswerOriginalQuestion>
+        <AnswerOriginalQuestion
+        leg = {leg}
+        onCorrectAnswer = {onOrginalCorrectAnswer}
+        onMovingToAlternate = {onMovingToAlternate}
+        uploadImage = {uploadImage}
+        ></AnswerOriginalQuestion>
       </div>
       )
     }
   
     return (
       <div>
-        <AnswerAlternateQuestion leg = {leg} onCorrectAnswer = {onAlternateCorrectAnswer} onMovingToOriginal = {onMovingToOriginal} onSkiping = {onSkiping}></AnswerAlternateQuestion>
+        <AnswerAlternateQuestion
+        leg = {leg}
+        onCorrectAnswer ={onAlternateCorrectAnswer}
+        onMovingToOriginal = {onMovingToOriginal}
+        onSkiping = {onSkiping}
+        >
+        </AnswerAlternateQuestion>
       </div>
   )
 

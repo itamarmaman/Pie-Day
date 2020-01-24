@@ -1,5 +1,6 @@
 import app from 'firebase/app';
 require('firebase/firestore');
+require('firebase/storage');
 
 
 var firebaseConfig = {
@@ -16,6 +17,7 @@ class Firebase {
   constructor() {
     app.initializeApp(firebaseConfig);
     this.db = app.firestore();
+    this.storage = app.storage();
   }
 
   events() {
@@ -24,6 +26,14 @@ class Firebase {
 
   TIMESTAMP() {
     return app.firestore.FieldValue.serverTimestamp();
+  }
+
+  uploadImageForGroup(groupNum, legIndex, file) {
+    var storageRef = this.storage.ref();
+    var fileRef = storageRef.child("group_"+groupNum+"/images")
+    return fileRef.put(file).then(function(snapshot) {
+      console.log('Uploaded a blob or file!');
+    }).catch((e)=>{console.log("got error uploaing file for geoupNum "+groupNum, e)})
   }
 
   getLatestEventForGroup(groupNum) {

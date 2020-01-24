@@ -5,6 +5,7 @@ import Header from './Header';
 import QuestionForm from './QuestionForm'
 import Win from './Win'
 import OnlineStatus from './OnlineStatus'
+import { fromNumber } from 'long';
 
 export default function App({ firebase }) {
 
@@ -16,7 +17,10 @@ export default function App({ firebase }) {
     storageBucket: "pie-day-91621.appspot.com",
     messagingSenderId: "315194400949",
     appId: "1:315194400949:web:3a7013eeb1884d43a11efc"
+
   };
+
+  
   const [groupNum, setGroupNum] = useState(null);
   const [showSuccsesNotification, setShowSuccsesNotification] = useState(false);
   const [legIndex, setLegIndex] = useState(0);
@@ -160,6 +164,10 @@ export default function App({ firebase }) {
     moveToNextLeg()
   }
 
+  function uploadImage(picture) {
+    firebase.uploadImageForGroup(groupNum,legIndex,picture)
+  }
+
   if (liatURL) {
     return <OnlineStatus teamsArray={teamsArray} firebase={firebase}></OnlineStatus>
   }
@@ -175,7 +183,14 @@ export default function App({ firebase }) {
       <Header groupNum={groupNum} progress={progress}></Header>
       {showSuccsesNotification ? <div>Congratolations! Thats the right answer</div> : null}
       {!finished ?
-        <QuestionForm leg={teamsArray[groupNum][legIndex]} onOrginalCorrectAnswer={onOrginalCorrectAnswer} onAlternateCorrectAnswer={onAlternateCorrectAnswer} onSkipingQuestion={onSkipingQuestion}></QuestionForm>
+        <QuestionForm 
+          leg={teamsArray[groupNum][legIndex]}
+          onOrginalCorrectAnswer={onOrginalCorrectAnswer}
+          onAlternateCorrectAnswer={onAlternateCorrectAnswer}
+          onSkipingQuestion={onSkipingQuestion}
+          uploadImage = {uploadImage}
+          > 
+          </QuestionForm>
         : <Win></Win>}
     </div>
   )
