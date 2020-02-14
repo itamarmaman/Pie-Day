@@ -28,9 +28,15 @@ class Firebase {
     return app.firestore.FieldValue.serverTimestamp();
   }
 
+  getFileExt(file) {
+    const fileType = file.name.substring(file.name.lastIndexOf('.'))
+    return fileType
+  }
+
   uploadImageForGroup(groupNum, legIndex, file) {
     var storageRef = this.storage.ref();
-    var fileRef = storageRef.child("group_"+groupNum+"/"+legIndex+"/"+file.name)
+    const ext = this.getFileExt(file);
+    var fileRef = storageRef.child("group_"+groupNum+"/"+legIndex+"/image"+ext)
     return fileRef.put(file).then(function(snapshot) {
       console.log('Uploaded a blob or file!');
     }).catch((e)=>{console.log("got error uploaing file for geoupNum "+groupNum, e)})

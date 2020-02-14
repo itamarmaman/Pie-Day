@@ -38,17 +38,17 @@ export default function App({ firebase }) {
       {
         questionId: 67,
         alternateQuestionId: 167,
-        answerCode: "ABXD"
+        answerCode: "1"
       },
       {
         questionId: 34,
         alternateQuestionId: 134,
-        answerCode: "XYSAR"
+        answerCode: "2"
       },
       {
         questionId: 19,
         alternateQuestionId: 119,
-        answerCode: "ITAMAR_RUELLZZZ!!!!1"
+        answerCode: "3"
       },
 
     ],
@@ -56,17 +56,17 @@ export default function App({ firebase }) {
       {
         questionId: 67,
         alternateQuestionId: 167,
-        answerCode: "ABXD"
+        answerCode: "1"
       },
       {
         questionId: 34,
         alternateQuestionId: 134,
-        answerCode: "XYSAR"
+        answerCode: "2"
       },
       {
         questionId: 19,
         alternateQuestionId: 119,
-        answerCode: "ITAMAR_RUELLZZZ!!!!1"
+        answerCode: "3"
       },
 
     ]
@@ -155,8 +155,6 @@ export default function App({ firebase }) {
   function onAlternateCorrectAnswer() {
     progress[legIndex] = 2
     setProgress(progress)
-    setShowSuccsesNotification(true)
-    setTimeout(() => setShowSuccsesNotification(false), 2000)
     moveToNextLeg()
   }
   function onSkipingQuestion() {

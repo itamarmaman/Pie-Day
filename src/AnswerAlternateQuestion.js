@@ -1,14 +1,24 @@
 import React, { useState } from 'react';
+import Pictures from './Pictures';
 
-export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingToOriginal, onSkiping}) {
-  const [userCode, setUserCode] = useState("");
-  const [giveUp, setGiveUp] = useState(false)
+export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingToOriginal, onSkiping, uploadImage, showSucsess}) {
+  const [userCode, setUserCode] = useState(leg.answerCode);
+  const [giveUp, setGiveUp] = useState(false);
+  const [showUploader, setShowUploader] = useState(false);
+
+  function onFinishPicture() {
+    setShowUploader(false)
+    onMovingToOriginal()
+    setUserCode(leg.answerCode)
+    onCorrectAnswer()
+  }
+  
   function validateAnswer() {
     if (userCode === leg.answerCode)
     {
-      onCorrectAnswer()
-      setUserCode("")
-      onMovingToOriginal()
+      showSucsess()
+      setShowUploader(true)
+     
     }
     else {
       setGiveUp(true)
@@ -22,10 +32,13 @@ export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingTo
   if (!giveUp) {
     return (
       <div>
-        <h3>Answer Question Number {leg.alternateQuestionId}</h3>
+        <h3>Answer Question Number {leg.questionId}</h3>
         <p>Enter the code from the station (dont forget to take a pic)</p>
         <input type = "text" name = "" value = {userCode} onChange = {(e) => setUserCode(e.target.value)}></input>
         <button onClick = {() => validateAnswer()}>אישור</button>
+        { showUploader ? 
+          <Pictures onFinishPicture = {onFinishPicture} uploadImage = {uploadImage}></Pictures>
+        : null }
       </div>
   );
     }
