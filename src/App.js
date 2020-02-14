@@ -143,11 +143,13 @@ export default function App({ firebase }) {
 
   }
 
+  function showSucsess () {
+    setShowSuccsesNotification(true)
+    setTimeout(() => setShowSuccsesNotification(false), 2000)
+  }
   function onOrginalCorrectAnswer() {
     progress[legIndex] = 3
     setProgress(progress)
-    setShowSuccsesNotification(true)
-    setTimeout(() => setShowSuccsesNotification(false), 2000)
     moveToNextLeg()
   }
   function onAlternateCorrectAnswer() {
@@ -182,13 +184,15 @@ export default function App({ firebase }) {
     <div className="App">
       <Header groupNum={groupNum} progress={progress}></Header>
       {showSuccsesNotification ? <div>Congratolations! Thats the right answer</div> : null}
+      
       {!finished ?
         <QuestionForm 
-          leg={teamsArray[groupNum][legIndex]}
-          onOrginalCorrectAnswer={onOrginalCorrectAnswer}
-          onAlternateCorrectAnswer={onAlternateCorrectAnswer}
-          onSkipingQuestion={onSkipingQuestion}
+          leg = {teamsArray[groupNum][legIndex]}
+          onOrginalCorrectAnswer = {onOrginalCorrectAnswer}
+          onAlternateCorrectAnswer = {onAlternateCorrectAnswer}
+          onSkipingQuestion = {onSkipingQuestion}
           uploadImage = {uploadImage}
+          showSucsess = {showSucsess}
           > 
           </QuestionForm>
         : <Win></Win>}

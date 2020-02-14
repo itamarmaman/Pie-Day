@@ -30,7 +30,7 @@ class Firebase {
 
   uploadImageForGroup(groupNum, legIndex, file) {
     var storageRef = this.storage.ref();
-    var fileRef = storageRef.child("group_"+groupNum+"/images")
+    var fileRef = storageRef.child("group_"+groupNum+"/"+legIndex+"/"+file.name)
     return fileRef.put(file).then(function(snapshot) {
       console.log('Uploaded a blob or file!');
     }).catch((e)=>{console.log("got error uploaing file for geoupNum "+groupNum, e)})
