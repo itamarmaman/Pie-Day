@@ -23,3 +23,7 @@ code {
 .alternative .progress-marker::before  { 
   background-color: yellow !important;
 }
+
+.image-progress { 
+  width: 100px;
+}

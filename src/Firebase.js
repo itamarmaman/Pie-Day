@@ -54,6 +54,20 @@ class Firebase {
 
       }).catch((e) => {console.log("eror in getLatestEventForGroup", e)})
   }
+
+  getAllEvenstForGroup(groupNum) {
+    console.log("in getLatestEventForGroup ", groupNum)
+  return this.db.collection("events").where('groupNum', '==', "" + groupNum).orderBy("legIndex", 'asc').get()
+  .then(function (querySnapshot) {
+      console.log( "got replay back "+querySnapshot.size);
+      if (querySnapshot.size === 0) {
+       return null;
+      }    
+    return querySnapshot;
+
+    }).catch((e) => {console.log("eror in getLatestEventForGroup", e)})
+}
+
 }
 
 

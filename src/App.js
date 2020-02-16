@@ -169,18 +169,18 @@ export default function App({ firebase }) {
   }
 
   if (liatURL) {
-    return <OnlineStatus teamsArray={teamsArray} firebase={firebase}></OnlineStatus>
+    return <OnlineStatus teamsArray = {teamsArray} firebase = {firebase} liatURL = {liatURL}></OnlineStatus>
   }
   if (!groupNum) {
     return (
       <div className="App">
-        <SelectGroup onGroupNum={onGN}></SelectGroup>
+        <SelectGroup onGroupNum = {onGN}></SelectGroup>
       </div>
     );
   }
   return (
     <div className="App">
-      <Header groupNum={groupNum} progress={progress}></Header>
+      <Header groupNum = {groupNum} progress = {progress}></Header>
       {showSuccsesNotification ? <div>Congratolations! Thats the right answer</div> : null}
       
       {!finished ?

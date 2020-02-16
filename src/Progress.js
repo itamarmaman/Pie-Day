@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import "../node_modules/progress-tracker/src/styles/progress-tracker.scss";
 
-export default function Progress({progress}) {
+export default function Progress({progress, liatURL}) {
 
   console.log("in progres", progress)
   function getText(step, index) {
     switch (step) {
-      case 0: return index + 1
+      case 0: return index + ((liatURL) ? 0 : 1)
       case 1: return "X";
       case 2: return "✓" 
       case 3: return "✓" 
@@ -24,10 +24,17 @@ export default function Progress({progress}) {
   return (
     <div>
       <ul className="progress-tracker">
-        {progress.map((step, index) => 
-          <li key = {index} className={getStatus(step, index)} >
-            <div className="progress-marker" data-text={getText(step, index)}> </div>
-            </li>)
+        {progress.map((p) => 
+          <li key = {'leg'+p.leg} className={getStatus(p.value, p.leg)} >
+            <div className="progress-marker" data-text={getText(p.value, p.leg)}>
+              {liatURL ?  
+                <div className="progress-text">
+                  <h4 className="progress-title">{p.creationTime} step {p.leg} </h4>
+                  <img src={p.imageSrc} className="image-progress"></img>
+                </div>
+              : null}
+            </div>
+          </li>)
         }
         </ul>
     </div>
