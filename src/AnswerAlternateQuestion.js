@@ -34,7 +34,7 @@ export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingTo
       <div>
         <h3>Answer Question Number {leg.questionId}</h3>
         <p>Enter the code from the station (dont forget to take a pic)</p>
-        <input type = "text" name = "" value = {userCode} onChange = {(e) => setUserCode(e.target.value)}></input>
+        <input type="number"  pattern="\d*" name = "" value = {userCode} onChange = {(e) => setUserCode(e.target.value)}></input>
         <button onClick = {() => validateAnswer()}>אישור</button>
         { showUploader ? 
           <Pictures onFinishPicture = {onFinishPicture} uploadImage = {uploadImage}></Pictures>

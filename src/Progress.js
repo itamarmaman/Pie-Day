@@ -1,15 +1,59 @@
 import React, { useState } from 'react';
 import "../node_modules/progress-tracker/src/styles/progress-tracker.scss";
+import Modal from 'react-modal';
+
+const customStyles = {
+  content : {
+    top                   : '50%',
+    left                  : '50%',
+    right                 : 'auto',
+    bottom                : 'auto',
+    marginRight           : '-50%',
+    transform             : 'translate(-50%, -50%)',
+  }
+};
+
+// customStyles.content["z-index"] = '100';
+
+
+Modal.setAppElement('#root')
+
+
 
 export default function Progress({progress, liatURL}) {
 
+  const [modalIsOpen,setIsOpen] = useState(false);
+  const [progressInfo,setProgressInfo] = useState({});
+
+
+
+  function openModal(p) {
+    setIsOpen(true);
+    setProgressInfo(p)
+  }
+
+  function afterOpenModal() {
+    // references are now sync'd and can be accessed.
+
+  }
+
+  function closeModal(){
+    setIsOpen(false);
+  }
+
+
   console.log("in progres", progress)
   function getText(step, index) {
-    switch (step) {
-      case 0: return index + ((liatURL) ? 0 : 1)
-      case 1: return "X";
+    return index + ((liatURL) ? 0 : 1);
+  }
+
+  function getStepInfo(value) {
+    switch (value) {
+      case 0: return "";
+      // case 0: return leg
+      case 1: return "X"
       case 2: return "✓" 
-      case 3: return "✓" 
+      case 3: return "✓✓"
     }
   }
 
@@ -21,18 +65,41 @@ export default function Progress({progress, liatURL}) {
     if (progress.indexOf(0) === index) c.push("is-active")
     return c.join(" ")
   }
+
+ 
   return (
-    <div>
+    <div className="progress">
+        
+        <Modal
+          isOpen={modalIsOpen}
+          onAfterOpen={afterOpenModal}
+          onRequestClose={closeModal}
+          style={customStyles}
+          contentLabel="Example Modal"
+        >
+          <a href="#" onClick={closeModal} className="close"> </a>
+
+          <img src={progressInfo.imageSrc} className="image-progress-modal"></img>
+
+          <h2>groupNum: {progressInfo.groupNum} / leg {progressInfo.leg} </h2>
+          <div>{progressInfo.creationTime}</div>         
+        </Modal>
+
+
       <ul className="progress-tracker">
         {progress.map((p) => 
-          <li key = {'leg'+p.leg} className={getStatus(p.value, p.leg)} >
+          <li key = {'leg'+p.leg} className={getStatus(p.value, p.leg)}  onClick={()=>openModal(p)}>
             <div className="progress-marker" data-text={getText(p.value, p.leg)}>
-              {liatURL ?  
-                <div className="progress-text">
-                  <h4 className="progress-title">{p.creationTime} step {p.leg} </h4>
-                  <img src={p.imageSrc} className="image-progress"></img>
-                </div>
-              : null}
+              <div className="progress-text">
+                {liatURL ?  
+                  <div>
+                    <h4 className="progress-title">{p.leg}</h4>
+                    <h5>{p.creationTime}</h5>
+                    <img src={p.imageSrc} className="image-progress"></img>
+                  </div>
+              : <h4 className="progress-title step-info">{getStepInfo(p.value, p.leg)} </h4>}
+              </div>
+
             </div>
           </li>)
         }

@@ -6,6 +6,10 @@ export default function OnlineStatus({ teamsArray, firebase, liatURL }) {
 
   const [progressArray, setProgressArray] = useState( {})
 
+  function convertTimeStamp(ts) {
+    const d = ts.toDate();
+    return d.getHours()+":"+d.getMinutes();
+  }
   useEffect(() => {
     Object.keys(teamsArray).filter((gn) => !progressArray[gn]).map(async (groupNum) => {
       console.log('working on group', groupNum)
@@ -17,12 +21,14 @@ export default function OnlineStatus({ teamsArray, firebase, liatURL }) {
       if (querySnapshot != null) {
         progress = querySnapshot.docs.filter(doc => doc.data().legIndex > 0).map(doc=>{
           const data = doc.data();
+          const creationTime = convertTimeStamp(data.creationTime)
           console.log("data.creationTime", data.creationTime.toDate().toString())
           return {
+            groupNum,
             leg: data.legIndex, 
             value: data.progress[data.legIndex-1], 
-            creationTime : data.creationTime.toDate().toString(), 
-            imageSrc: `https://firebasestorage.googleapis.com/v0/b/pie-day-91621.appspot.com/o/group_${groupNum}%2F${data.legIndex}%2Fimage.png?alt=media&token=36ad5bab-a780-4e3c-a816-1b6444221339`
+            creationTime : creationTime, 
+            imageSrc: `https://firebasestorage.googleapis.com/v0/b/pie-day-91621.appspot.com/o/group_${groupNum}%2F${data.legIndex-1}%2Fimage?alt=media&token=36ad5bab-a780-4e3c-a816-1b6444221339`
         }})
       }
       console.log('g: ',groupNum, 'proress: ', progress)

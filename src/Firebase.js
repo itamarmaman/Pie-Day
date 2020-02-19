@@ -35,7 +35,7 @@ class Firebase {
 
   uploadImageForGroup(groupNum, legIndex, file) {
     var storageRef = this.storage.ref();
-    const ext = this.getFileExt(file);
+    const ext = "" //this.getFileExt(file);
     var fileRef = storageRef.child("group_"+groupNum+"/"+legIndex+"/image"+ext)
     return fileRef.put(file).then(function(snapshot) {
       console.log('Uploaded a blob or file!');

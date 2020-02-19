@@ -14,7 +14,7 @@ export default function Win({}) {
       width={width}
       height={height}
     /> : null}
-      <h1>Come back to the start</h1>
+      <h1>חזרו לנקודת ההתחלה</h1>
     </div>
   );
 }
