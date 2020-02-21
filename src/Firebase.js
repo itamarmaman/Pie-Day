@@ -59,7 +59,7 @@ class Firebase {
     console.log("in getLatestEventForGroup ", groupNum)
   return this.db.collection("events").where('groupNum', '==', "" + groupNum).orderBy("legIndex", 'asc').get()
   .then(function (querySnapshot) {
-      console.log( "got replay back "+querySnapshot.size);
+      console.log( "got replay back for g "+groupNum+" size :"+querySnapshot.size);
       if (querySnapshot.size === 0) {
        return null;
       }    

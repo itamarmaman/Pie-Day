@@ -13,9 +13,9 @@ code {
     monospace;
 }
 
-/* .success .progress-marker::before  { 
-  background-color: green !important;
-} */
+.success .progress-marker::before  { 
+  background-color: #0cb03af7 !important;
+}
 
 .failure .progress-marker::before  { 
   background-color: red !important;
@@ -23,6 +23,22 @@ code {
 
 .alternative .progress-marker::before  { 
   background-color: orange !important;
+}
+
+.is-active .progress-marker::before  { 
+  background-color: #319aee !important;
+}
+
+.success .progress-title::before {
+  content: "🙂";
+}
+
+.failure .progress-title::before {
+  content: "🙁";
+}
+
+.alternative .progress-title::before {
+  content: "😐";
 }
 
 .image-progress { 
@@ -71,4 +87,14 @@ code {
 
 .step-info { 
   text-align: left;
+}
+ol.instractions li {
+  text-align: right;
+}
+.progress .progress-tracker {
+  margin: 0px;
+}
+.progress-marker .progress-text {
+  padding-left: 3px;
+  /* padding-right: 0px; */
 }

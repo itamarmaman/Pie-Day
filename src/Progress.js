@@ -47,22 +47,13 @@ export default function Progress({progress, liatURL}) {
     return index + ((liatURL) ? 0 : 1);
   }
 
-  function getStepInfo(value) {
-    switch (value) {
-      case 0: return "";
-      // case 0: return leg
-      case 1: return "X"
-      case 2: return "✓" 
-      case 3: return "✓✓"
-    }
-  }
-
   function getStatus(step, index) { 
     var c =["progress-step"];
-    if (step === 3 || step === 2) c.push("is-complete")
+    if (step != 0) c.push("is-complete")
+    if (step === 3) c.push ("success")
     if (step === 2) c.push("alternative")
     if (step === 1) c.push("failure")
-    if (progress.indexOf(0) === index) c.push("is-active")
+    if (progress.findIndex((e) => e.value === 0) === index) c.push("is-active")
     return c.join(" ")
   }
 
@@ -97,7 +88,7 @@ export default function Progress({progress, liatURL}) {
                     <h5>{p.creationTime}</h5>
                     <img src={p.imageSrc} className="image-progress"></img>
                   </div>
-              : <h4 className="progress-title step-info">{getStepInfo(p.value, p.leg)} </h4>}
+              : <h4 className="progress-title step-info"></h4>}
               </div>
 
             </div>

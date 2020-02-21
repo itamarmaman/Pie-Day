@@ -11,15 +11,15 @@ export default function OnlineStatus({ teamsArray, firebase, liatURL }) {
     return d.getHours()+":"+d.getMinutes();
   }
   useEffect(() => {
-    Object.keys(teamsArray).filter((gn) => !progressArray[gn]).map(async (groupNum) => {
+    const promises = Object.keys(teamsArray).map((groupNum) => {
       console.log('working on group', groupNum)
-      const querySnapshot = await firebase.getAllEvenstForGroup(groupNum)
+      const querySnapshot = firebase.getAllEvenstForGroup(groupNum)
             
-      let emptyProgress =  Array(10).fill(0).map(function (v,i) {return {leg:i+1, value: 0}})
-      let progress = {}
+      return querySnapshot.then((qs) => {
+        let progress = {groupNum: groupNum, progress: []}
 
-      if (querySnapshot != null) {
-        progress = querySnapshot.docs.filter(doc => doc.data().legIndex > 0).map(doc=>{
+        if (qs != null &&  qs.docs.filter(doc => doc.data().legIndex > 0).length > 0) {
+          progress = qs.docs.filter(doc => doc.data().legIndex > 0).map(doc=>{
           const data = doc.data();
           const creationTime = convertTimeStamp(data.creationTime)
           console.log("data.creationTime", data.creationTime.toDate().toString())
@@ -29,15 +29,35 @@ export default function OnlineStatus({ teamsArray, firebase, liatURL }) {
             value: data.progress[data.legIndex-1], 
             creationTime : creationTime, 
             imageSrc: `https://firebasestorage.googleapis.com/v0/b/pie-day-91621.appspot.com/o/group_${groupNum}%2F${data.legIndex-1}%2Fimage?alt=media&token=36ad5bab-a780-4e3c-a816-1b6444221339`
-        }})
-      }
-      console.log('g: ',groupNum, 'proress: ', progress)
-      const newPA = Object.assign({}, progressArray)
-      newPA[groupNum] = Object.assign(emptyProgress, progress) 
-      setProgressArray(newPA)
+          }})
+        }
+        return {groupNum, progress}
       })
+    })      
+    Promise.all(promises).then((allProgresses) => {
+      console.log("all progresses: ",allProgresses)
+      const newPA = Object.assign({}, progressArray)
+      allProgresses.forEach((prgrs) => {
+        let emptyProgress =  Array(10).fill(0).map(function (v,i) {return {leg:i+1, value: 0}})
+        newPA[prgrs.groupNum] = Object.assign(emptyProgress, prgrs.progress)
+      })
+      // console.log('setting porgress for g: ',groupNum, 'proress: ', prgrs)
       
-  }, [progressArray]);
+      // const newPA = Object.assign({}, progressArray)
+      // console.log("object assign for g: "+groupNum+" result: ",Object.assign(emptyProgress, prgrs))
+      // newPA[groupNum] = Object.assign(emptyProgress, prgrs)
+      console.log("new pa ", newPA) 
+      setProgressArray(newPA)
+
+    })
+
+
+     
+     
+
+      console.log('finish')
+
+  }, []);
 
 
   return (

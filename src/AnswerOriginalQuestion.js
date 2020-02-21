@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import Pictures from './Pictures';
 
 export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingToAlternate, uploadImage, showSucsess}) {
-  const [userCode, setUserCode] = useState(leg.answerCode);
+  const [userCode, setUserCode] = useState("");
   const [giveUp, setGiveUp] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
 
   function onFinishPicture() {
     setShowUploader(false)
-    setUserCode(leg.answerCode)
+    setUserCode("")
     onCorrectAnswer()
   }
   
@@ -31,10 +31,16 @@ export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingTo
   if (!giveUp) {
     return (
       <div>
-        <h3>Answer Question Number {leg.questionId}</h3>
-        <p>Enter the code from the station (dont forget to take a pic)</p>
-        <input type="number"  pattern="\d*"  name = "" value = {userCode} onChange = {(e) => setUserCode(e.target.value)}></input>
-        <button onClick = {() => validateAnswer()}>אישור</button>
+        <ol className="instractions">
+          <li>פתרו את שאלה מספר <span>{leg.questionId}</span> בחוברת</li>
+          <li>לכו לתחנה שמספרה בתשובת השאלה</li>
+          <li>הכניסו את הקוד המופיע בתחנה זו</li>
+        </ol>
+        קוד: 
+        <form onSubmit={(e) => {e.preventDefault(); validateAnswer()}}>
+          <input type="number"  pattern="\d*"  name = "" value = {userCode} onChange = {(e) => setUserCode(e.target.value)}></input>
+          <button type="submit">שלח</button>
+        </form>
         { showUploader ? 
           <Pictures onFinishPicture = {onFinishPicture} uploadImage = {uploadImage}></Pictures>
         : null }
@@ -43,11 +49,10 @@ export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingTo
     }
   return (
     <div>
-      <h3>You are wrong</h3>
-      <br></br>
-      <button onClick = {() => tryingAgain()}>Try Again</button>
-      <button onClick = {() => {onMovingToAlternate()}}>Switch question</button>
-      <h3>Remember: Switching question is allways worse than answaring on the original one</h3>
+      <h3>קוד שגוי</h3>
+      <button onClick = {() => tryingAgain()}>נסו שנית</button>
+      <button onClick = {() => {onMovingToAlternate()}}>החלפו שאלה</button>
+      <h3>חשוב לזכור: שאלה חלופית מזכה בניקוד נמוך יותר משאלה מקורית</h3>
     </div>
   )
 }

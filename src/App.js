@@ -114,7 +114,7 @@ export default function App({ firebase }) {
     if (param) {
       onGN(param)
     }
-  }, [groupNum]);
+  }, []);
 
   function hasNextLeg() {
     return legIndex < teamsArray[groupNum].length - 1;
