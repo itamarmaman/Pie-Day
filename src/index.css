@@ -98,3 +98,60 @@ ol.instractions li {
   padding-left: 3px;
   /* padding-right: 0px; */
 }
+div.camera video, .img-preview {
+  object-fit: cover;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+.close-camera {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  border: 3px solid black;
+  border-radius: 25px;
+  background-color: white;
+  margin: 12px;
+}
+.close-camera:before, .close-camera:after {
+  left: 15px;
+  top: 8px;
+  height: 16px;
+}
+.switch-camera {
+  position: absolute;
+  z-index: 1;
+  width: 45px;
+  bottom: 25px;
+  left: 0px;
+  margin-left: 18px;
+}
+.send-button {
+  position: absolute;
+  z-index: 1;
+  bottom: 25px;
+  left: 50%;
+}
+
+.show-img-preview {
+  position: sticky;
+}
+
+
+body {
+  padding: 0;
+}
+
+.show-img-preview { 
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  width: 100vw;
+  height: 100vh;
+}
+
+.camera {
+  position: sticky;
+}

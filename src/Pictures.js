@@ -1,13 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageUploader from 'react-images-upload';
 import Camera , {FACING_MODES} from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
+
+function openFullscreen(elem) {
+  if (elem.requestFullscreen) {
+    elem.requestFullscreen().then(() => console.log("succsess"), (e) => console.log("eror: ",e));
+  } else if (elem.mozRequestFullScreen) { /* Firefox */
+    elem.mozRequestFullScreen();
+  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+    elem.webkitRequestFullscreen();
+  } else if (elem.msRequestFullscreen) { /* IE/Edge */
+    elem.msRequestFullscreen();
+  }
+}
 
 export default function Pictures({onFinishPicture, uploadImage}) {
 
   const [hasPicture, setHasPicture] = useState(false);
   const [pictures, setPictures] = useState([]);
-  const [mode, setMode] = useState(FACING_MODES.USER)
+  const [isSelfie, setIsSelfie] = useState(true)
 
   function onChange(pic) {
     console.log("on pic")
@@ -41,24 +53,29 @@ export default function Pictures({onFinishPicture, uploadImage}) {
       return URL.createObjectURL(pictures[0]);
   }
 
+  function getStyle() { 
+    return {"background-image": "url('"+getSrc()+"')"}
+  }
+  
   function onRetry() {
     setHasPicture(false)
     setPictures([])
   }
 
   function switchCamera() {
-    if (mode === FACING_MODES.ENVIRONMENT) {
-      setMode(FACING_MODES.USER)
-    }
-    else  {
-      setMode(FACING_MODES.ENVIRONMENT)
-    }
+    setIsSelfie(!isSelfie)
   }
+
+  useEffect(() => {
+
+    if (!hasPicture) {
+      openFullscreen(document.getElementsByClassName("camera")[0])
+    }
+  })
 
   return (
     <div>
-      <button onClick = {() => onFinishPicture()}>X</button>
-      <ImageUploader
+      {/* <ImageUploader
         withIcon={true}
         buttonText='Choose images'
         onChange={(picture) => onChange(picture)}
@@ -68,22 +85,30 @@ export default function Pictures({onFinishPicture, uploadImage}) {
         singleImage = {true}
         withIcon = {false}
         
-      />
+      /> */}
       {!hasPicture ?
-        <div>
+        <div className="camera">
+
+          <img src={require('./switch_camera.png')} className="switch-camera" onClick={() => switchCamera()}></img>
+          <a href="#" onClick={() => onFinishPicture()} className="close-camera close"> </a>
           <Camera
-          onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } }
-          idealFacingMode = {mode}
+            onTakePhoto = { (dataUri) => { handleTakePhoto(dataUri); } }
+            idealFacingMode = {isSelfie ? FACING_MODES.USER : FACING_MODES.ENVIRONMENT}
+            isImageMirror = {isSelfie}
+            isFullScreen = {true}
+            id="camera"
           />
-          <button onClick={() => switchCamera()}>switchCamera</button>
         </div>
       : null }
-      
-      <img src={getSrc()}/>
       {hasPicture ?
-        <div>
-          <button onClick = {() => onSave()}>ok</button>
-          <button onClick = {() => onRetry()}>retry</button>  
+        <div className="show-img-preview fullscreen" style={getStyle()}>
+          <button onClick = {() => onSave()} className="send-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+              <path fill="currentColor" d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z">
+              </path>
+            </svg>
+          </button>
+          <a href="#" onClick={() => onRetry()} className="close-camera close"> </a> 
         </div>
       : null}
     </div>

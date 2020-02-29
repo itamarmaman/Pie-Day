@@ -6,6 +6,7 @@ import QuestionForm from './QuestionForm'
 import Win from './Win'
 import OnlineStatus from './OnlineStatus'
 import { fromNumber } from 'long';
+import Welcome from './Welcome';
 
 export default function App({ firebase }) {
 
@@ -20,13 +21,14 @@ export default function App({ firebase }) {
 
   };
 
-  
+
   const [groupNum, setGroupNum] = useState(null);
   const [showSuccsesNotification, setShowSuccsesNotification] = useState(false);
   const [legIndex, setLegIndex] = useState(0);
   const [progress, setProgress] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [finished, setFinished] = useState(false);
   const [liatURL, setLiatURL] = useState(new URLSearchParams(window.location.search).has("liat"));
+  const [welcome, setWelcome] = useState(true)
 
   const progressArray = {
     1: [3, 3, 2, 1, 1, 0, 0, 0, 0, 0],
@@ -79,8 +81,9 @@ export default function App({ firebase }) {
 
 
     const querySnapShot = await firebase.getLatestEventForGroup(x)
-    
+
     if (querySnapShot == null) {
+      setWelcome(true)
       console.log("sending init event for group ", x)
       firebase.events().add({
         groupNum: x,
@@ -99,7 +102,9 @@ export default function App({ firebase }) {
     } else {
 
       const event = querySnapShot.docs[0].data()
-
+      if(event.legIndex >0 ) {
+        setWelcome(false)
+      }
       console.log("event ", event)
       setProgress(event.progress)
       setFinished(event.finish)
@@ -109,6 +114,7 @@ export default function App({ firebase }) {
 
 
   useEffect(() => {
+
     const param = new URLSearchParams(window.location.search).get("team");
     console.log("in useEffect ", param)
     if (param) {
@@ -143,7 +149,7 @@ export default function App({ firebase }) {
 
   }
 
-  function showSucsess () {
+  function showSucsess() {
     setShowSuccsesNotification(true)
     setTimeout(() => setShowSuccsesNotification(false), 2000)
   }
@@ -165,34 +171,42 @@ export default function App({ firebase }) {
   }
 
   function uploadImage(picture) {
-    firebase.uploadImageForGroup(groupNum,legIndex,picture)
+    firebase.uploadImageForGroup(groupNum, legIndex, picture)
   }
 
   if (liatURL) {
-    return <OnlineStatus teamsArray = {teamsArray} firebase = {firebase} liatURL = {liatURL}></OnlineStatus>
+    return <OnlineStatus teamsArray={teamsArray} firebase={firebase} liatURL={liatURL}></OnlineStatus>
   }
+
   if (!groupNum) {
     return (
       <div className="App">
-        <SelectGroup onGroupNum = {onGN}></SelectGroup>
+        <SelectGroup onGroupNum={onGN}></SelectGroup>
       </div>
     );
   }
+  if (groupNum && welcome) {
+    return (
+      <div className="App">
+        <Welcome groupNum={groupNum} onFinishWelcome={() => setWelcome(false)}></Welcome>
+      </div>
+    )
+  }
   return (
     <div className="App">
-      <Header groupNum = {groupNum} progress = {progress}></Header>
+      <Header groupNum={groupNum} progress={progress}></Header>
       {showSuccsesNotification ? <div>Congratolations! Thats the right answer</div> : null}
-      
+
       {!finished ?
-        <QuestionForm 
-          leg = {teamsArray[groupNum][legIndex]}
-          onOrginalCorrectAnswer = {onOrginalCorrectAnswer}
-          onAlternateCorrectAnswer = {onAlternateCorrectAnswer}
-          onSkipingQuestion = {onSkipingQuestion}
-          uploadImage = {uploadImage}
-          showSucsess = {showSucsess}
-          > 
-          </QuestionForm>
+        <QuestionForm
+          leg={teamsArray[groupNum][legIndex]}
+          onOrginalCorrectAnswer={onOrginalCorrectAnswer}
+          onAlternateCorrectAnswer={onAlternateCorrectAnswer}
+          onSkipingQuestion={onSkipingQuestion}
+          uploadImage={uploadImage}
+          showSucsess={showSucsess}
+        >
+        </QuestionForm>
         : <Win></Win>}
     </div>
   )

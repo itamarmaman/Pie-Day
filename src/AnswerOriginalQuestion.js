@@ -31,19 +31,22 @@ export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingTo
   if (!giveUp) {
     return (
       <div>
-        <ol className="instractions">
-          <li>פתרו את שאלה מספר <span>{leg.questionId}</span> בחוברת</li>
-          <li>לכו לתחנה שמספרה בתשובת השאלה</li>
-          <li>הכניסו את הקוד המופיע בתחנה זו</li>
-        </ol>
-        קוד: 
-        <form onSubmit={(e) => {e.preventDefault(); validateAnswer()}}>
-          <input type="number"  pattern="\d*"  name = "" value = {userCode} onChange = {(e) => setUserCode(e.target.value)}></input>
-          <button type="submit">שלח</button>
-        </form>
         { showUploader ? 
           <Pictures onFinishPicture = {onFinishPicture} uploadImage = {uploadImage}></Pictures>
-        : null }
+        :  
+        <div>
+          <ol className="instractions">
+            <li>פתרו את שאלה מספר <span>{leg.questionId}</span> בחוברת</li>
+            <li>לכו לתחנה שמספרה בתשובת השאלה</li>
+            <li>הכניסו את הקוד המופיע בתחנה זו</li>
+          </ol>
+          <form onSubmit={(e) => {e.preventDefault(); validateAnswer()}}>
+            קוד: 
+            <input type="number"  pattern="\d*"  name = "" value = {userCode} onChange = {(e) => setUserCode(e.target.value)}></input>
+            <button type="submit">שלח</button>
+          </form>
+        </div>
+        }
       </div>
   );
     }
