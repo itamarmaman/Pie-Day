@@ -40,7 +40,7 @@ export default function App({ firebase }) {
       {
         questionId: 67,
         alternateQuestionId: 167,
-        answerCode: "1"
+        answerCode: "1A"
       },
       {
         questionId: 34,
@@ -52,25 +52,59 @@ export default function App({ firebase }) {
         alternateQuestionId: 119,
         answerCode: "3"
       },
+      {
+        questionId: 60,
+        alternateQuestionId: 160,
+        answerCode: "4"
+      },
+      {
+        questionId: 89,
+        alternateQuestionId: 189,
+        answerCode: "5"
+      },
+      {
+        questionId: 11,
+        alternateQuestionId: 111,
+        answerCode: "6"
+      },
+      {
+        questionId: 55,
+        alternateQuestionId: 155,
+        answerCode: "7"
+      },
+      {
+        questionId: 42,
+        alternateQuestionId: 142,
+        answerCode: "8"
+      },
+      {
+        questionId: 79,
+        alternateQuestionId: 179,
+        answerCode: "9"
+      },
+      {
+        questionId: 69,
+        alternateQuestionId: 169,
+        answerCode: "10"
+      }
 
     ],
     2: [
       {
-        questionId: 67,
-        alternateQuestionId: 167,
-        answerCode: "1"
+        questionId: 90,
+        alternateQuestionId: 190,
+        answerCode: "11"
       },
       {
-        questionId: 34,
-        alternateQuestionId: 134,
-        answerCode: "2"
+        questionId: 47,
+        alternateQuestionId: 147,
+        answerCode: "12"
       },
       {
-        questionId: 19,
-        alternateQuestionId: 119,
-        answerCode: "3"
+        questionId: 78,
+        alternateQuestionId: 178,
+        answerCode: "13"
       },
-
     ]
   }
 
@@ -102,7 +136,7 @@ export default function App({ firebase }) {
     } else {
 
       const event = querySnapShot.docs[0].data()
-      if(event.legIndex >0 ) {
+      if(event.legIndex > 0 ) {
         setWelcome(false)
       }
       console.log("event ", event)
