@@ -55,10 +55,23 @@ class Firebase {
       }).catch((e) => {console.log("eror in getLatestEventForGroup", e)})
   }
 
+
+  loadTA(groupNum) {
+    console.log("in load TeamsArray for group ", groupNum);
+    return this.db.collection("config").doc("legs_"+groupNum).get().then(function(doc) {
+      console.log("TeamsArray fetched ",doc.data())
+      if (!doc.exists) {
+        console.log("couldnt find confing for "+groupNum);
+        return Promise.reject(new Error('could not find a TeamsArray for group '+ groupNum))
+      }
+      return doc.data();
+    })
+  }
+
   getAllEvenstForGroup(groupNum) {
     console.log("in getLatestEventForGroup ", groupNum)
-  return this.db.collection("events").where('groupNum', '==', "" + groupNum).orderBy("legIndex", 'asc').get()
-  .then(function (querySnapshot) {
+    return this.db.collection("events").where('groupNum', '==', "" + groupNum).orderBy("legIndex", 'asc').get()
+    .then(function (querySnapshot) {
       console.log( "got replay back for g "+groupNum+" size :"+querySnapshot.size);
       if (querySnapshot.size === 0) {
        return null;
@@ -66,7 +79,11 @@ class Firebase {
     return querySnapshot;
 
     }).catch((e) => {console.log("eror in getLatestEventForGroup", e)})
-}
+  }
+
+  updateConfig(groupNum, config) {
+    return this.db.collection("config").doc("legs_"+groupNum).set(config).then(() => {return "success"}).catch((e) => {return e})
+  }
 
 }
 

@@ -1,10 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Pictures from './Pictures';
 
-export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingToAlternate, uploadImage, showSucsess}) {
+export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingToAlternate, uploadImage, showSucsess, onSkiping}) {
   const [userCode, setUserCode] = useState("");
   const [giveUp, setGiveUp] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
+
+  useEffect(()=>{
+    setGiveUp(false)
+  }, [leg])
 
   function onFinishPicture() {
     setShowUploader(false)
@@ -13,7 +17,7 @@ export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingTo
   }
   
   function validateAnswer() {
-    if (userCode === leg.answerCode)
+    if (userCode.toUpperCase() === leg.answerCode.toUpperCase())
     {
       showSucsess()
       setShowUploader(true)
@@ -42,7 +46,7 @@ export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingTo
           </ol>
           <form onSubmit={(e) => {e.preventDefault(); validateAnswer()}}>
             קוד: 
-            <input type="number"  pattern="\d*"  name = "" value = {userCode} onChange = {(e) => setUserCode(e.target.value)}></input>
+            <input name = "" value = {userCode} onChange = {(e) => setUserCode(e.target.value)}></input>
             <button type="submit">שלח</button>
           </form>
         </div>
@@ -54,8 +58,17 @@ export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingTo
     <div>
       <h3>קוד שגוי</h3>
       <button onClick = {() => tryingAgain()}>נסו שנית</button>
-      <button onClick = {() => {onMovingToAlternate()}}>החלפו שאלה</button>
-      <h3>חשוב לזכור: שאלה חלופית מזכה בניקוד נמוך יותר משאלה מקורית</h3>
+      {leg.alternateQuestionId !== 0 ? 
+        <div>
+          <button onClick = {() => {onMovingToAlternate()}}>החלפו שאלה</button>
+          <h3>חשוב לזכור: שאלה חלופית מזכה בניקוד נמוך יותר משאלה מקורית</h3>
+        </div>
+      : 
+      <div>
+        <button onClick = {() => {onSkiping()}}>דלגו לשאלה הבאה</button>
+        <h3>חשוב לזכור: דילוג על שאלה לא מזכה בניקוד </h3>
+      </div>
+      }
     </div>
   )
 }

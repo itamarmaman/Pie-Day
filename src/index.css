@@ -155,3 +155,11 @@ body {
 .camera {
   position: sticky;
 }
+
+.admin {
+  direction: ltr;
+}
+
+.loading {
+  text-align: center;
+}

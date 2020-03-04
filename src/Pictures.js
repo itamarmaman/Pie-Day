@@ -54,7 +54,7 @@ export default function Pictures({onFinishPicture, uploadImage}) {
   }
 
   function getStyle() { 
-    return {"background-image": "url('"+getSrc()+"')"}
+    return {"backgroundImage": "url('"+getSrc()+"')"}
   }
   
   function onRetry() {
@@ -71,6 +71,7 @@ export default function Pictures({onFinishPicture, uploadImage}) {
     if (!hasPicture) {
       openFullscreen(document.getElementsByClassName("camera")[0])
     }
+   
   })
 
   return (

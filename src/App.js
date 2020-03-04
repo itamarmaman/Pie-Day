@@ -5,8 +5,8 @@ import Header from './Header';
 import QuestionForm from './QuestionForm'
 import Win from './Win'
 import OnlineStatus from './OnlineStatus'
-import { fromNumber } from 'long';
 import Welcome from './Welcome';
+import Admin from './Admin';
 
 export default function App({ firebase }) {
 
@@ -27,128 +27,64 @@ export default function App({ firebase }) {
   const [legIndex, setLegIndex] = useState(0);
   const [progress, setProgress] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [finished, setFinished] = useState(false);
-  const [liatURL, setLiatURL] = useState(new URLSearchParams(window.location.search).has("liat"));
+  const liatURL = new URLSearchParams(window.location.search).has("liat");
+  const admin = new URLSearchParams(window.location.search).has("admin");
   const [welcome, setWelcome] = useState(true)
+  const [teamsArray, setTeamsArray] = useState()
+  const [showSpinner, setShowSpinner] = useState(false)
 
-  const progressArray = {
-    1: [3, 3, 2, 1, 1, 0, 0, 0, 0, 0],
-    2: [2, 2, 3, 3, 3, 1, 0, 0, 0, 0],
-    3: [1, 1, 3, 3, 3, 3, 3, 0, 0, 0]
-  }
-  const teamsArray = {
-    1: [
-      {
-        questionId: 67,
-        alternateQuestionId: 167,
-        answerCode: "1A"
-      },
-      {
-        questionId: 34,
-        alternateQuestionId: 134,
-        answerCode: "2"
-      },
-      {
-        questionId: 19,
-        alternateQuestionId: 119,
-        answerCode: "3"
-      },
-      {
-        questionId: 60,
-        alternateQuestionId: 160,
-        answerCode: "4"
-      },
-      {
-        questionId: 89,
-        alternateQuestionId: 189,
-        answerCode: "5"
-      },
-      {
-        questionId: 11,
-        alternateQuestionId: 111,
-        answerCode: "6"
-      },
-      {
-        questionId: 55,
-        alternateQuestionId: 155,
-        answerCode: "7"
-      },
-      {
-        questionId: 42,
-        alternateQuestionId: 142,
-        answerCode: "8"
-      },
-      {
-        questionId: 79,
-        alternateQuestionId: 179,
-        answerCode: "9"
-      },
-      {
-        questionId: 69,
-        alternateQuestionId: 169,
-        answerCode: "10"
-      }
 
-    ],
-    2: [
-      {
-        questionId: 90,
-        alternateQuestionId: 190,
-        answerCode: "11"
-      },
-      {
-        questionId: 47,
-        alternateQuestionId: 147,
-        answerCode: "12"
-      },
-      {
-        questionId: 78,
-        alternateQuestionId: 178,
-        answerCode: "13"
-      },
-    ]
-  }
-
-  async function onGN(x) {
+  function onGN(x) {
     if (x == groupNum) return;
     console.log("GN ", x)
     setGroupNum(x)
+    setShowSpinner(true)
+    firebase.loadTA(x).then(async (ta) => {
+      console.log("got teams array ", ta)
+      setShowSpinner(false)
+      setTeamsArray(ta)
 
+      const querySnapShot = await firebase.getLatestEventForGroup(x)
 
-    const querySnapShot = await firebase.getLatestEventForGroup(x)
-
-    if (querySnapShot == null) {
-      setWelcome(true)
-      console.log("sending init event for group ", x)
-      firebase.events().add({
-        groupNum: x,
-        legIndex: 0,
-        progress: progress,
-        finish: false,
-        creationTime: firebase.TIMESTAMP()
-      })
-        .then(function (docRef) {
-          console.log("Document written with ID: ", docRef.id);
+      if (querySnapShot == null) {
+        setWelcome(true)
+        console.log("sending init event for group ", x)
+        firebase.events().add({
+          groupNum: x,
+          legIndex: 0,
+          progress: progress,
+          finish: false,
+          creationTime: firebase.TIMESTAMP()
         })
-        .catch(function (error) {
-          console.error("Error adding document: ", error);
-        });
+          .then(function (docRef) {
+            console.log("Document written with ID: ", docRef.id);
+          })
+          .catch(function (error) {
+            console.error("Error adding document: ", error);
+          });
 
-    } else {
+      } else {
 
-      const event = querySnapShot.docs[0].data()
-      if(event.legIndex > 0 ) {
-        setWelcome(false)
+        const event = querySnapShot.docs[0].data()
+        if(event.legIndex > 0 ) {
+          setWelcome(false)
+        }
+        console.log("event ", event)
+        setProgress(event.progress)
+        setFinished(event.finish)
+        setLegIndex(event.legIndex)
       }
-      console.log("event ", event)
-      setProgress(event.progress)
-      setFinished(event.finish)
-      setLegIndex(event.legIndex)
-    }
+      
+   }).catch((ex) => {
+     console.log("XXX", ex);
+   })
+
+    
   }
 
 
   useEffect(() => {
-
+ 
     const param = new URLSearchParams(window.location.search).get("team");
     console.log("in useEffect ", param)
     if (param) {
@@ -208,10 +144,18 @@ export default function App({ firebase }) {
     firebase.uploadImageForGroup(groupNum, legIndex, picture)
   }
 
+  if (admin) {
+    return <Admin firebase={firebase}></Admin>
+  }
+
+  if (showSpinner) {
+    return <div className="loading">
+      <img src={require('./spinner.gif')}></img>
+      </div>
+  }
   if (liatURL) {
     return <OnlineStatus teamsArray={teamsArray} firebase={firebase} liatURL={liatURL}></OnlineStatus>
   }
-
   if (!groupNum) {
     return (
       <div className="App">

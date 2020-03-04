@@ -26,6 +26,7 @@ export default function QuestionForm({leg, onOrginalCorrectAnswer, onAlternateCo
         onMovingToAlternate = {onMovingToAlternate}
         uploadImage = {uploadImage}
         showSucsess = {showSucsess}
+        onSkiping = {onSkiping}
         ></AnswerOriginalQuestion>
       </div>
       )
