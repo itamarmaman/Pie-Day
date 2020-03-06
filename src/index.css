@@ -129,11 +129,11 @@ div.camera video, .img-preview {
   margin-left: 18px;
 }
 .send-button {
-  position: absolute;
-  z-index: 1;
-  bottom: 25px;
-  left: 50%;
-  transform: rotate(180deg);
+  /* position: absolute; */
+  /* z-index: 1; */
+  /* bottom: 25px; */
+  /* left: 50%; */
+  /* transform: rotate(180deg); */
   background-color: Transparent;
   background-repeat:no-repeat;
   border: none;
@@ -145,6 +145,9 @@ div.camera video, .img-preview {
   border-radius: 50%;
   width: 38px;
   height: 38px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 90vh; 
 }
 
 .send-button.code {
@@ -155,12 +158,6 @@ div.camera video, .img-preview {
 .send-button svg { 
   margin-right: -3px;
 }
-
-
-.show-img-preview {
-  position: sticky;
-}
-
 
 body {
   padding: 0;
@@ -213,4 +210,24 @@ body {
 
 .input-code { 
   margin-bottom: 10px;
+}
+
+.back-arrow { 
+  position: absolute;
+  right: 32px;
+  top: 32px;
+  width: 32px;
+  height: 32px;
+  background-color: white;
+  border: solid;
+  border-radius: 50%;
+}
+
+.back-arrow svg { 
+  fill: black
+}
+.send-button.code {
+  position: absolute;
+  bottom: 25px;
+  margin-top: 0px;
 }

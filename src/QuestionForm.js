@@ -28,7 +28,6 @@ export default function QuestionForm({leg, onOrginalCorrectAnswer, onAlternateCo
       onCorrectAnswer = {onOrginalCorrectAnswer}
       onMovingToAlternate = {onMovingToAlternate}
       uploadImage = {uploadImage}
-      showSucsess = {showSucsess}
       onSkiping = {onSkiping}
       />
     :
