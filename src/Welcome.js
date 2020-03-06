@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 
-export default function Welcome({groupNum, onFinishWelcome}) {
+export default function Welcome({onHasCameraPermission, onFinishWelcome}) {
 
   const [showButton, setShowButton] = useState(false)
   useEffect(() => {
 
     navigator.permissions.query({ name: 'camera' }).then((permissionObj) => {
       console.log('permission *** ', permissionObj.state);
-      if (permissionObj.state === "granted") {
+      if (permissionObj.state === "granted") { 
         setShowButton(true)
+        onHasCameraPermission()
       }
       else {
         return navigator.mediaDevices.getUserMedia({
@@ -24,6 +25,7 @@ export default function Welcome({groupNum, onFinishWelcome}) {
         });
       }
       setShowButton(true)
+      onHasCameraPermission()
     })
       .catch((error) => {
         console.log('Got error :', error);

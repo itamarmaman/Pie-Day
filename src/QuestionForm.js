@@ -5,6 +5,8 @@ import AnswerAlternateQuestion from './AnswerAlternateQuestion'
 export default function QuestionForm({leg, onOrginalCorrectAnswer, onAlternateCorrectAnswer, onSkipingQuestion, uploadImage, showSucsess}) {
   
   const [questionType, onQuestionType] = useState(true)
+
+
   
   function onMovingToAlternate() {
     onQuestionType(false)
@@ -16,34 +18,29 @@ export default function QuestionForm({leg, onOrginalCorrectAnswer, onAlternateCo
     onQuestionType(true)
     onSkipingQuestion()
   }
-  
-  if (questionType) {
-    return (
-      <div>
-        <AnswerOriginalQuestion
-        leg = {leg}
-        onCorrectAnswer = {onOrginalCorrectAnswer}
-        onMovingToAlternate = {onMovingToAlternate}
-        uploadImage = {uploadImage}
-        showSucsess = {showSucsess}
-        onSkiping = {onSkiping}
-        ></AnswerOriginalQuestion>
-      </div>
-      )
-    }
-  
-    return (
-      <div>
-        <AnswerAlternateQuestion
-        leg = {leg}
-        onCorrectAnswer ={onAlternateCorrectAnswer}
-        onMovingToOriginal = {onMovingToOriginal}
-        onSkiping = {onSkiping}
-        uploadImage = {uploadImage}
-        showSucsess = {showSucsess}
-        >
-        </AnswerAlternateQuestion>
-      </div>
-  )
 
+  return (
+    <div>
+      
+    {questionType ? 
+     <AnswerOriginalQuestion
+      leg = {leg}
+      onCorrectAnswer = {onOrginalCorrectAnswer}
+      onMovingToAlternate = {onMovingToAlternate}
+      uploadImage = {uploadImage}
+      showSucsess = {showSucsess}
+      onSkiping = {onSkiping}
+      />
+    :
+    <AnswerAlternateQuestion
+      leg = {leg}
+      onCorrectAnswer ={onAlternateCorrectAnswer}
+      onMovingToOriginal = {onMovingToOriginal}
+      onSkiping = {onSkiping}
+      uploadImage = {uploadImage}
+      showSucsess = {showSucsess}
+      />
+    }
+    </div>
+  )
 }

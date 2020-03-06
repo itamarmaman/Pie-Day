@@ -23,7 +23,6 @@ export default function App({ firebase }) {
 
 
   const [groupNum, setGroupNum] = useState(null);
-  const [showSuccsesNotification, setShowSuccsesNotification] = useState(false);
   const [legIndex, setLegIndex] = useState(0);
   const [progress, setProgress] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [finished, setFinished] = useState(false);
@@ -32,6 +31,7 @@ export default function App({ firebase }) {
   const [welcome, setWelcome] = useState(true)
   const [teamsArray, setTeamsArray] = useState()
   const [showSpinner, setShowSpinner] = useState(false)
+  const [hasCameraPermission, setHasCameraPermission] = useState(false)
 
 
   function onGN(x) {
@@ -66,7 +66,7 @@ export default function App({ firebase }) {
       } else {
 
         const event = querySnapShot.docs[0].data()
-        if(event.legIndex > 0 ) {
+        if(event.legIndex > 0  && hasCameraPermission) {
           setWelcome(false)
         }
         console.log("event ", event)
@@ -119,10 +119,10 @@ export default function App({ firebase }) {
 
   }
 
-  function showSucsess() {
-    setShowSuccsesNotification(true)
-    setTimeout(() => setShowSuccsesNotification(false), 2000)
+  function onHasCameraPermission(){
+    setHasCameraPermission(true)
   }
+
   function onOrginalCorrectAnswer() {
     progress[legIndex] = 3
     setProgress(progress)
@@ -166,15 +166,13 @@ export default function App({ firebase }) {
   if (groupNum && welcome) {
     return (
       <div className="App">
-        <Welcome groupNum={groupNum} onFinishWelcome={() => setWelcome(false)}></Welcome>
+        <Welcome onHasCameraPermission={onHasCameraPermission} onFinishWelcome={() => setWelcome(false)}></Welcome>
       </div>
     )
   }
   return (
     <div className="App">
       <Header groupNum={groupNum} progress={progress}></Header>
-      {showSuccsesNotification ? <div>Congratolations! Thats the right answer</div> : null}
-
       {!finished ?
         <QuestionForm
           leg={teamsArray[groupNum][legIndex]}
@@ -182,7 +180,6 @@ export default function App({ firebase }) {
           onAlternateCorrectAnswer={onAlternateCorrectAnswer}
           onSkipingQuestion={onSkipingQuestion}
           uploadImage={uploadImage}
-          showSucsess={showSucsess}
         >
         </QuestionForm>
         : <Win></Win>}

@@ -16,8 +16,7 @@ export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingTo
   function validateAnswer() {
     if (userCode.toUpperCase() === leg.alternateAnswerCode.toUpperCase())
     {
-      showSucsess()
-      setShowUploader(true)
+      showSucsess(() => setShowUploader(true))
      
     }
     else {
@@ -33,13 +32,13 @@ export default function AnswerOriginalQuestion({leg, onCorrectAnswer, onMovingTo
     return (
       <div>
         <ol className="instractions">
-          <li>פתרו את שאלה מספר <span>{leg.alternateQuestionId}</span> בחוברת</li>
-          <li>לכו לתחנה שמספרה בתשובת השאלה</li>
+          <li>פתרו את שאלה מספר <span className='question-id'>{leg.alternateQuestionId}</span> בחוברת</li>
+          <li>לכו לתחנה שמספרה כתשובת השאלה</li>
           <li>הכניסו את הקוד המופיע בתחנה זו</li>
         </ol>
         <form onSubmit={(e) => {e.preventDefault(); validateAnswer()}}>
           קוד: 
-          <input name = "" value = {userCode} onChange = {(e) => setUserCode(e.target.value)}></input>
+          <input minLength="6" maxLength="6" size="6" name = "" value = {userCode} onChange = {(e) => setUserCode(e.target.value)}></input>
           <button type="submit">שלח</button>
         </form>
         { showUploader ? 
