@@ -1,0 +1,26 @@
+{
+  "files": {
+    "main.css": "/Pie-Day/static/css/main.75e6c70a.chunk.css",
+    "main.js": "/Pie-Day/static/js/main.defcc86d.chunk.js",
+    "main.js.map": "/Pie-Day/static/js/main.defcc86d.chunk.js.map",
+    "runtime-main.js": "/Pie-Day/static/js/runtime-main.8146e374.js",
+    "runtime-main.js.map": "/Pie-Day/static/js/runtime-main.8146e374.js.map",
+    "static/css/2.7fa60bb6.chunk.css": "/Pie-Day/static/css/2.7fa60bb6.chunk.css",
+    "static/js/2.623bd87c.chunk.js": "/Pie-Day/static/js/2.623bd87c.chunk.js",
+    "static/js/2.623bd87c.chunk.js.map": "/Pie-Day/static/js/2.623bd87c.chunk.js.map",
+    "index.html": "/Pie-Day/index.html",
+    "precache-manifest.3f2558e48f1962f69f514064d9c4bd1b.js": "/Pie-Day/precache-manifest.3f2558e48f1962f69f514064d9c4bd1b.js",
+    "service-worker.js": "/Pie-Day/service-worker.js",
+    "static/css/2.7fa60bb6.chunk.css.map": "/Pie-Day/static/css/2.7fa60bb6.chunk.css.map",
+    "static/css/main.75e6c70a.chunk.css.map": "/Pie-Day/static/css/main.75e6c70a.chunk.css.map",
+    "static/media/CameraSvg.d85207d1.svg": "/Pie-Day/static/media/CameraSvg.d85207d1.svg",
+    "static/media/back.0e751996.svg": "/Pie-Day/static/media/back.0e751996.svg"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8146e374.js",
+    "static/css/2.7fa60bb6.chunk.css",
+    "static/js/2.623bd87c.chunk.js",
+    "static/css/main.75e6c70a.chunk.css",
+    "static/js/main.defcc86d.chunk.js"
+  ]
+}
