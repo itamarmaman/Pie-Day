@@ -9,17 +9,16 @@ export default function Pictures({ onFinishPicture, uploadImage }) {
   const [hasPicture, setHasPicture] = useState(false);
   const [pictures, setPictures] = useState([]);
   const [isSelfie, setIsSelfie] = useState(true)
-  const [isFullScreen, setIsFullScreen] = useState(false);
 
   function openFullscreen(elem) {
     if (elem.requestFullscreen) {
-      elem.requestFullscreen().then(() => {console.log("succsess FS"); setIsFullScreen(true)}, (e) => console.log("eror: ", e));
+      elem.requestFullscreen().then(() => {console.log("succsess FS"); }, (e) => console.log("eror: ", e));
     } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen().then(()=>setIsFullScreen(true))
+      elem.mozRequestFullScreen()
     } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-      elem.webkitRequestFullscreen().then(()=>setIsFullScreen(true))
+      elem.webkitRequestFullscreen()
     } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen().then(()=>setIsFullScreen(true))
+      elem.msRequestFullscreen()
     }
   }
 
@@ -70,13 +69,7 @@ export default function Pictures({ onFinishPicture, uploadImage }) {
   }
 
   useEffect(() => {
-    console.log("in useefect, ", isFullScreen)
-    if (!isFullScreen) {
-      // openFullscreen(document.getElementsByClassName("camera")[0])
-    }
-    return function cleanup() {
-      setIsFullScreen(false) 
-    }
+    openFullscreen(document.getElementsByClassName("camera")[0])    
   },[])
 
   return (
