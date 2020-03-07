@@ -3,24 +3,27 @@ import Camera, { FACING_MODES } from 'react-html5-camera-photo';
 import 'react-html5-camera-photo/build/css/index.css';
 import { ReactComponent as BackSvg } from './back.svg'
 
-function openFullscreen(elem) {
-  if (elem.requestFullscreen) {
-    elem.requestFullscreen().then(() => console.log("succsess"), (e) => console.log("eror: ", e));
-  } else if (elem.mozRequestFullScreen) { /* Firefox */
-    elem.mozRequestFullScreen();
-  } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-    elem.webkitRequestFullscreen();
-  } else if (elem.msRequestFullscreen) { /* IE/Edge */
-    elem.msRequestFullscreen();
-  }
-}
 
 export default function Pictures({ onFinishPicture, uploadImage }) {
 
   const [hasPicture, setHasPicture] = useState(false);
   const [pictures, setPictures] = useState([]);
   const [isSelfie, setIsSelfie] = useState(true)
+  const [isFullScreen, setIsFullScreen] = useState(false);
 
+  function openFullscreen(elem) {
+    if (elem.requestFullscreen) {
+      elem.requestFullscreen().then(() => {console.log("succsess FS"); setIsFullScreen(true)}, (e) => console.log("eror: ", e));
+    } else if (elem.mozRequestFullScreen) { /* Firefox */
+      elem.mozRequestFullScreen().then(()=>setIsFullScreen(true))
+    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+      elem.webkitRequestFullscreen().then(()=>setIsFullScreen(true))
+    } else if (elem.msRequestFullscreen) { /* IE/Edge */
+      elem.msRequestFullscreen().then(()=>setIsFullScreen(true))
+    }
+  }
+
+  
   function onChange(pic) {
     console.log("on pic")
     setPictures([pic[pic.length - 1]])
@@ -67,8 +70,13 @@ export default function Pictures({ onFinishPicture, uploadImage }) {
   }
 
   useEffect(() => {
-    console.log("in useefect")
-    openFullscreen(document.getElementsByClassName("camera")[0])
+    console.log("in useefect, ", isFullScreen)
+    if (!isFullScreen) {
+      // openFullscreen(document.getElementsByClassName("camera")[0])
+    }
+    return function cleanup() {
+      setIsFullScreen(false) 
+    }
   },[])
 
   return (

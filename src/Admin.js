@@ -9,6 +9,7 @@ export default function Admin({ firebase }) {
   async function onSubmit () {
     try {
       const config = JSON.parse(teamsArray)
+      firebase.sendAllTA(config)
       setStatus(await Promise.all(Object.keys(config).map((gn) => {
         const groupConfig = {}
         groupConfig[gn] = config[gn]

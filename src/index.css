@@ -133,7 +133,7 @@ div.camera video, .img-preview {
   /* z-index: 1; */
   /* bottom: 25px; */
   /* left: 50%; */
-  /* transform: rotate(180deg); */
+  transform: rotate(180deg);
   background-color: Transparent;
   background-repeat:no-repeat;
   border: none;
@@ -227,7 +227,13 @@ body {
   fill: black
 }
 .send-button.code {
-  position: absolute;
+  /* position: absolute;
   bottom: 25px;
+  margin-top: 0px; */
+  margin-right: 10px;
   margin-top: 0px;
+  vertical-align: middle;
+}
+.online-status {
+  direction: ltr;
 }

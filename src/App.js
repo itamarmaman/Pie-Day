@@ -154,7 +154,7 @@ export default function App({ firebase }) {
       </div>
   }
   if (liatURL) {
-    return <OnlineStatus teamsArray={teamsArray} firebase={firebase} liatURL={liatURL}></OnlineStatus>
+    return <OnlineStatus /*teamsArray={teamsArray}*/ firebase={firebase} liatURL={liatURL}></OnlineStatus>
   }
   if (!groupNum) {
     return (
