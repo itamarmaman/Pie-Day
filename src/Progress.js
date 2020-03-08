@@ -28,7 +28,8 @@ export default function Progress({ progress, liatURL }) {
 
 
   function openModal(p) {
-    if (liatURL) {
+    if (liatURL && (p.value !== 0)) {
+      console.log("p: ",p)
       setIsOpen(true);
       setProgressInfo(p)
     }
@@ -69,14 +70,18 @@ export default function Progress({ progress, liatURL }) {
         style={customStyles}
         contentLabel="Example Modal">
         <a href="#" onClick={closeModal} className="close close-camera"> </a>
+        <button onClick={() => setProgressInfo(progress[progressInfo.leg + 1])} disabled={progressInfo.leg === 9 || (progress[progressInfo.leg + 1] && progress[progressInfo.leg + 1].value === 0) }>next</button>
+        <button onClick={() => setProgressInfo(progress[progressInfo.leg - 1])} disabled={progressInfo.leg === 0}>prev</button>
+        <br/>
         <img src={progressInfo.imageSrc} className="image-progress-modal"></img>
         <h4>קבוצה: {progressInfo.groupNum}</h4>
-        <h4>שלב: {progressInfo.leg} 
+        <h4>שלב: {progressInfo.leg + 1} 
           <span className={getStatus(progressInfo.value, -1)}> 
             <span className="progress-title"></span>
             <span>{progressInfo.creationTime}</span>
           </span>
         </h4>
+        
       </Modal>
 
       <ul className="progress-tracker">
