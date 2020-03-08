@@ -28,7 +28,7 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
               console.log("data.creationTime", data.creationTime.toDate().toString())
               return {
                 groupNum,
-                leg: data.legIndex,
+                leg: data.legIndex - 1,
                 value: data.progress[data.legIndex - 1],
                 creationTime: creationTime,
                 imageSrc: `https://firebasestorage.googleapis.com/v0/b/pie-day-91621.appspot.com/o/group_${groupNum}%2F${data.legIndex - 1}%2Fimage?alt=media&token=36ad5bab-a780-4e3c-a816-1b6444221339`
@@ -45,7 +45,7 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
       console.log("all progresses: ", allProgresses)
       const newPA = Object.assign({}, progressArray)
       allProgresses.forEach((prgrs) => {
-        let emptyProgress = Array(10).fill(0).map(function (v, i) { return { leg: i + 1, value: 0 } })
+        let emptyProgress = Array(10).fill(0).map(function (v, i) { return { leg: i, value: 0 } })
         if (prgrs.progress.length > 0) {
           newPA[prgrs.groupNum] = Object.assign(emptyProgress, prgrs.progress)
         } 

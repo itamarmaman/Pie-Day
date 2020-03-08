@@ -99,11 +99,11 @@ ol.instractions li {
   /* padding-right: 0px; */
 }
 div.camera video, .img-preview {
-  object-fit: cover;
+  /* object-fit: cover;
   height: 100vh;
   width: 100vw;
   margin: 0;
-  padding: 0;
+  padding: 0; */
 }
 .close-camera {
   position: absolute;
@@ -133,7 +133,6 @@ div.camera video, .img-preview {
   /* z-index: 1; */
   /* bottom: 25px; */
   /* left: 50%; */
-  transform: rotate(180deg);
   background-color: Transparent;
   background-repeat:no-repeat;
   border: none;
@@ -146,13 +145,13 @@ div.camera video, .img-preview {
   width: 38px;
   height: 38px;
   margin-left: auto;
-  margin-right: auto;
-  margin-top: 90vh; 
+  margin-right: auto; 
 }
 
 .send-button.code {
   position: static;
   z-index: 0;
+  transform: rotate(180deg);
 }
 
 .send-button svg { 
@@ -163,12 +162,9 @@ body {
   padding: 0;
 }
 
-.show-img-preview { 
-  background-position: center center;
-  background-repeat: no-repeat;
-  background-size: contain;
+.show-img-preview img { 
   width: 100vw;
-  height: 100vh;
+  position: sticky;
 }
 
 .camera {
@@ -214,17 +210,7 @@ body {
 
 .back-arrow { 
   position: absolute;
-  right: 32px;
-  top: 32px;
-  width: 32px;
-  height: 32px;
-  background-color: white;
-  border: solid;
-  border-radius: 50%;
-}
-
-.back-arrow svg { 
-  fill: black
+  left: 0px;
 }
 .send-button.code {
   /* position: absolute;

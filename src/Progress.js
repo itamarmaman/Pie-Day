@@ -45,8 +45,8 @@ export default function Progress({ progress, liatURL }) {
 
 
   console.log("in progres", progress)
-  function getText(step, index) {
-    return index + ((liatURL) ? 0 : 1);
+  function getText(index) {
+    return index + 1;
   }
 
   function getStatus(step, index) {
@@ -82,7 +82,7 @@ export default function Progress({ progress, liatURL }) {
       <ul className="progress-tracker">
         {progress.map((p) =>
           <li key={'leg' + p.leg} className={getStatus(p.value, p.leg)} onClick={() => openModal(p)}>
-            <div className="progress-marker" data-text={getText(p.value, p.leg)}>
+            <div className="progress-marker" data-text={getText(p.leg)}>
               <div className="progress-text">
                 {liatURL ?
                   <div>

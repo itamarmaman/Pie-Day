@@ -71,7 +71,7 @@ export default function AnswerOriginalQuestion({ leg, onCorrectAnswer, onMovingT
       <button onClick={() => tryingAgain()}>נסו שנית</button>
       {leg.alternateQuestionId !== 0 ?
         <div>
-          <button onClick={() => { onMovingToAlternate() }}>החלפו שאלה</button>
+          <button onClick={() => { onMovingToAlternate() }}>החליפו שאלה</button>
           <h3>חשוב לזכור: שאלה חלופית מזכה בניקוד נמוך יותר משאלה מקורית</h3>
         </div>
         :

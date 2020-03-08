@@ -9,19 +9,6 @@ export default function Pictures({ onFinishPicture, uploadImage }) {
   const [hasPicture, setHasPicture] = useState(false);
   const [pictures, setPictures] = useState([]);
   const [isSelfie, setIsSelfie] = useState(true)
-
-  function openFullscreen(elem) {
-    if (elem.requestFullscreen) {
-      elem.requestFullscreen().then(() => {console.log("succsess FS"); }, (e) => console.log("eror: ", e));
-    } else if (elem.mozRequestFullScreen) { /* Firefox */
-      elem.mozRequestFullScreen()
-    } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
-      elem.webkitRequestFullscreen()
-    } else if (elem.msRequestFullscreen) { /* IE/Edge */
-      elem.msRequestFullscreen()
-    }
-  }
-
   
   function onChange(pic) {
     console.log("on pic")
@@ -55,10 +42,6 @@ export default function Pictures({ onFinishPicture, uploadImage }) {
       return URL.createObjectURL(pictures[0]);
   }
 
-  function getStyle() {
-    return { "backgroundImage": "url('" + getSrc() + "')" }
-  }
-
   function onRetry() {
     setHasPicture(false)
     setPictures([])
@@ -68,21 +51,18 @@ export default function Pictures({ onFinishPicture, uploadImage }) {
     setIsSelfie(!isSelfie)
   }
 
-  useEffect(() => {
-    openFullscreen(document.getElementsByClassName("camera")[0])    
-  },[])
-
   return (
     <div>
       {hasPicture ?
-        <div className="show-img-preview" style={getStyle()}>
+        <div className="show-img-preview">
+          <button onClick={() => onRetry()} className='back-arrow'>צילום חוזר</button>
+          <img src={getSrc()}/>
           <button onClick={() => onSave()} className="send-button">
             <svg viewBox="0 0 24 24" width="24" height="24">
               <path fill="currentColor" d="M1.101 21.757L23.8 12.028 1.101 2.3l.011 7.912 13.623 1.816-13.623 1.817-.011 7.912z">
               </path>
             </svg>
           </button>
-          <div className='back-arrow'><BackSvg onClick={() => onRetry()}/></div>
         </div>
         :
         <div className="camera">
