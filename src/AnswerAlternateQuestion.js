@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Pictures from './Pictures';
-import CorrectAnswer from './CorrectAnswer';
+import AfterQuestion from './AfterQuestion';
 
 
 export default function AnswerOriginalQuestion({ leg, onCorrectAnswer, onMovingToOriginal, onSkiping, uploadImage, showSucsess }) {
@@ -8,11 +8,17 @@ export default function AnswerOriginalQuestion({ leg, onCorrectAnswer, onMovingT
   const [giveUp, setGiveUp] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
   const [waitForAnswer, setWaitForAnswer] = useState(true)
+  const [skipping, setSkipping] = useState(false)
 
   function onFinishPicture() {
     setShowUploader(false)
-    onMovingToOriginal()
     setUserCode("")
+    if (skipping) {
+      setSkipping(false)
+      onSkiping()
+      return
+    }
+    onMovingToOriginal()
     onCorrectAnswer()
   }
 
@@ -55,16 +61,28 @@ export default function AnswerOriginalQuestion({ leg, onCorrectAnswer, onMovingT
               </form>              
             </div>
             :
-            <CorrectAnswer onOpenCamera={() => { setShowUploader(true) }} />
+            <AfterQuestion succeed={true} onOpenCamera={() => { setShowUploader(true) }} />
             }
       </div>);
   }
   return (
     <div>
-      <h3>קוד שגוי</h3>
-      <button onClick={() => tryingAgain()}>נסו שנית</button>
-      <button onClick={() => { onSkiping() }}>דלגו לשאלה הבאה</button>
-      <h3>חשוב לזכור: דילוג על שאלה לא מזכה בניקוד </h3>
+      {!skipping ?
+      <>
+        <h3>קוד שגוי</h3>
+        <button onClick={() => tryingAgain()}>נסו שנית</button>
+        <button onClick={() => { setSkipping(true)}}>דלגו לשאלה הבאה</button>
+        <h3>חשוב לזכור: דילוג על שאלה לא מזכה בניקוד </h3>
+      </>
+      :
+      <div>
+        {showUploader ?
+          <Pictures onFinishPicture={onFinishPicture} uploadImage={uploadImage} />
+            :
+            <AfterQuestion succeed={false} onOpenCamera={() => { setShowUploader(true) }} />
+            }
+      </div>
+      }
     </div>
   )
 }

@@ -1,4 +1,17 @@
-check zoom and camera for more devices (iphone)
-disigne liat
-change win
 change question sucsess
+
+
+
+
+send img when skiping so no-one else would skip for them - DONEEEEEEEEEEEEEE
+send img above img
+disigne liat
+compact veiw
+check zoom and camera for more devices (iphone)
+sort teams by score for liat
+notify admin if no img
+admin - write something when emphty
+seperate try again or switch
+add leading zero to mins in admin
+change win
+put links in bitly and update sheet

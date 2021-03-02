@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Pictures from './Pictures';
-import CorrectAnswer from './CorrectAnswer';
+import AfterQuestion from './AfterQuestion';
 
 export default function AnswerOriginalQuestion({ leg, onCorrectAnswer, onMovingToAlternate, uploadImage, onSkiping }) {
   const [userCode, setUserCode] = useState("");
   const [giveUp, setGiveUp] = useState(false);
   const [showUploader, setShowUploader] = useState(false);
   const [waitForAnswer, setWaitForAnswer] = useState(true)
+  const [skipping, setSkipping] = useState(false)
 
 
   useEffect(() => {
@@ -17,6 +18,11 @@ export default function AnswerOriginalQuestion({ leg, onCorrectAnswer, onMovingT
   function onFinishPicture() {
     setShowUploader(false)
     setUserCode("")
+    if (skipping) {
+      setSkipping(false)
+      onSkiping()
+      return
+    }
     onCorrectAnswer()
   }
 
@@ -60,25 +66,37 @@ export default function AnswerOriginalQuestion({ leg, onCorrectAnswer, onMovingT
               </form>
             </div>
             :
-            <CorrectAnswer onOpenCamera={() => { setShowUploader(true) }} />
+            <AfterQuestion succeed={true} onOpenCamera={() => { setShowUploader(true) }} />
         }
       </div>
     );
   }
   return (
     <div>
+      { !skipping ?
+      <>
       <h3>קוד שגוי</h3>
       <button onClick={() => tryingAgain()}>נסו שנית</button>
-      {leg.alternateQuestionId !== 0 ?
+      { leg.alternateQuestionId !== 0 ?
         <div>
           <button onClick={() => { onMovingToAlternate() }}>החליפו שאלה</button>
           <h3>חשוב לזכור: שאלה חלופית מזכה בניקוד נמוך יותר משאלה מקורית</h3>
         </div>
         :
         <div>
-          <button onClick={() => { onSkiping() }}>דלגו לשאלה הבאה</button>
+          <button onClick={() => { setSkipping(true) }}>דלגו לשאלה הבאה</button>
           <h3>חשוב לזכור: דילוג על שאלה לא מזכה בניקוד </h3>
         </div>
+      }
+      </>
+      :
+      <div>
+        {showUploader ?
+          <Pictures onFinishPicture={onFinishPicture} uploadImage={uploadImage}></Pictures>
+        :
+        <AfterQuestion succeed={false} onOpenCamera={() => { setShowUploader(true) }} />
+        }
+      </div>
       }
     </div>
   )
