@@ -9,7 +9,8 @@ disigne liat - DONEEEEEEEEEEEEEEEEEEEEEEEE
 compact veiw
 check zoom and camera for more devices (iphone)
 sort teams by score for liat
-notify admin if no img
+teacher to add winnig code (new component after progres finished) - and add finish time to OnlineStatus
+notify admin if no img - DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 admin - write something when emphty
 seperate try again or switch
 add leading zero to mins in admin
