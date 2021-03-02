@@ -30,11 +30,11 @@ code {
 }
 
 .success .progress-title::before {
-  content: "🙂";
+  content: "😃";
 }
 
 .failure .progress-title::before {
-  content: "🙁";
+  content: "😭";
 }
 
 .alternative .progress-title::before {

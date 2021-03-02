@@ -95,9 +95,9 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
         return (
           <div key={'gn_' + groupNum}>
             <h1>{groupNum}</h1>
-            <span>🙂: {progressSummery(progressArray[groupNum]).original}</span>
+            <span>😃: {progressSummery(progressArray[groupNum]).original}</span>
             <span>😐: {progressSummery(progressArray[groupNum]).alternate}</span>
-            <span>🙁: {progressSummery(progressArray[groupNum]).skipped}</span>
+            <span>😭: {progressSummery(progressArray[groupNum]).skipped}</span>
             <Progress
               progress={progressArray[groupNum]}
               liatURL={liatURL}
