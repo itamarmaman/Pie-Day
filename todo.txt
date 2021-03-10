@@ -7,9 +7,9 @@ send img when skiping so no-one else would skip for them - DONEEEEEEEEEEEEEE
 send img above img - DONEEEEEEEEEEEEEEEEEEEE
 disigne liat - DONEEEEEEEEEEEEEEEEEEEEEEEE
 compact veiw
-check zoom and camera for more devices (iphone)
+check zoom and camera for more devices (iphone) - DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 sort teams by score for liat
-teacher to add winnig code (new component after progres finished) - and add finish time to OnlineStatus
+teacher to add winnig code (new component after progres finished) - and add finish time to OnlineStatus - X
 notify admin if no img - DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 admin - write something when emphty
 seperate try again or switch
