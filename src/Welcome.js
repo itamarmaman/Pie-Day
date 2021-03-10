@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PieGifStart from './pie2.gif'
 
 export default function Welcome({ onHasCameraPermission, onFinishWelcome }) {
 
@@ -44,6 +45,9 @@ export default function Welcome({ onHasCameraPermission, onFinishWelcome }) {
       {showButton ?
         <button onClick={() => onFinishWelcome()}>למשחק!</button>
         : <h3>תנו גישה למצלמה לפני שמתחילים</h3>}
+      <br/>
+      <br/>
+      <img src={PieGifStart} className="pie-gif" />
     </div>
   );
 }

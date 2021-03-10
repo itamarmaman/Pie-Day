@@ -223,3 +223,7 @@ body {
 .online-status {
   direction: ltr;
 }
+
+.pie-gif {
+  width: 100%;
+}

@@ -12,7 +12,7 @@ sort teams by score for liat
 teacher to add winnig code (new component after progres finished) - and add finish time to OnlineStatus - X
 notify admin if no img - DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 admin - write something when emphty
-seperate try again or switch
+seperate try again or switch - DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 add leading zero to mins in admin
 change win
 put links in bitly and update sheet

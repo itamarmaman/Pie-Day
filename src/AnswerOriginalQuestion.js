@@ -79,11 +79,13 @@ export default function AnswerOriginalQuestion({ leg, onCorrectAnswer, onMovingT
       <button onClick={() => tryingAgain()}>נסו שנית</button>
       { leg.alternateQuestionId !== 0 ?
         <div>
+          <br/>
           <button onClick={() => { onMovingToAlternate() }}>החליפו שאלה</button>
           <h3>חשוב לזכור: שאלה חלופית מזכה בניקוד נמוך יותר משאלה מקורית</h3>
         </div>
         :
         <div>
+          <br/>
           <button onClick={() => { setSkipping(true) }}>דלגו לשאלה הבאה</button>
           <h3>חשוב לזכור: דילוג על שאלה לא מזכה בניקוד </h3>
         </div>

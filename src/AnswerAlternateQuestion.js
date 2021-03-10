@@ -71,6 +71,8 @@ export default function AnswerOriginalQuestion({ leg, onCorrectAnswer, onMovingT
       <>
         <h3>קוד שגוי</h3>
         <button onClick={() => tryingAgain()}>נסו שנית</button>
+        <br/>
+        <br/>
         <button onClick={() => { setSkipping(true)}}>דלגו לשאלה הבאה</button>
         <h3>חשוב לזכור: דילוג על שאלה לא מזכה בניקוד </h3>
       </>
