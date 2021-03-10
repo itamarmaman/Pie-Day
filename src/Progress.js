@@ -101,7 +101,7 @@ export default function Progress({ progress, liatURL }) {
                 {liatURL ?
                   <div>
                     <h4 className="progress-title step-info"></h4>
-                    <h5>{p.creationTime}</h5>
+                    {/* <h5>{p.creationTime}</h5> */}
                   </div>
                   : <h4 className="progress-title step-info"></h4>}
               </div>

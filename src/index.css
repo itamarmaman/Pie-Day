@@ -222,8 +222,14 @@ body {
 }
 .online-status {
   direction: ltr;
+  margin: 2%;
 }
 
 .pie-gif {
   width: 100%;
+}
+
+.progress-step:last-child {
+  flex: 1 1;
+  flex-grow: unset;
 }

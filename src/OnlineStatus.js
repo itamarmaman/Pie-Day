@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import "../node_modules/progress-tracker/src/styles/progress-tracker.scss";
 import Progress from './Progress';
+import { useAsync } from 'react-use';
 
 export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
 
   const [progressArray, setProgressArray] = useState({})
   // const [teamsArray, setTeamsArray] = useState({})
+  const [isOpen, setIsOpen] = useState([])
 
 
   function convertTimeStamp(ts) {
@@ -31,6 +33,7 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
                 leg: data.legIndex - 1,
                 value: data.progress[data.legIndex - 1],
                 creationTime: creationTime,
+                finish: data.finish,
                 imageSrc: `https://firebasestorage.googleapis.com/v0/b/pie-day-91621.appspot.com/o/group_${groupNum}%2F${data.legIndex - 1}%2Fimage?alt=media&token=36ad5bab-a780-4e3c-a816-1b6444221339`
               }
             })
@@ -57,6 +60,8 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
       // newPA[groupNum] = Object.assign(emptyProgress, prgrs)
       console.log("new pa ", newPA)
       setProgressArray(newPA)
+      setIsOpen(Array( Object.keys(newPA).length).fill(false))
+
 
     })})
 
@@ -88,22 +93,57 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
     return summary;
   }
 
+  function sortGroups(grpA, grpB) {
+    const grpAStatus = progressSummery(progressArray[grpA])
+    const grpBStatus = progressSummery(progressArray[grpB])
+    const grpAprogres = progressArray[grpA][lastActiveAction(grpA)]
+    const grpBprogres = progressArray[grpB][lastActiveAction(grpB)]
+    if (grpAStatus.original > grpBStatus.original) return -1
+    if (grpAStatus.original < grpBStatus.original) return 1
+    if (grpAStatus.alternate > grpBStatus.alternate) return -1
+    if (grpAStatus.alternate < grpBStatus.alternate) return 1
+    if (grpAprogres.finish && grpBprogres.finish) return grpAprogres.creationTime-grpBprogres.creationTime
+    if (grpAprogres.finish) return -1
+    if (grpBprogres.finish) return 1
+    return 0
+  }
+  
+  function lastActiveAction(groupNum) {
+    const index = progressArray[groupNum].slice().reverse().findIndex(obj => obj.value != 0);
+    return progressArray[groupNum].length - 1 - index
+  } 
+
+  function openClose (ind) {
+    const newIsOpen = isOpen.slice()
+    newIsOpen[ind] = !isOpen[ind]             
+    console.log("newIsOpen", newIsOpen)
+    setIsOpen(newIsOpen)
+  }
+
   return (
 
     <div className="online-status">
-      {Object.keys(progressArray).map((groupNum) => {
+      <button onClick={() => setIsOpen(Array(isOpen.length).fill(false))}>collapse</button>
+      <button onClick={() => setIsOpen(Array(isOpen.length).fill(true))}>expend</button>
+      {console.log("isOpen", isOpen)}
+      {Object.keys(progressArray).sort(sortGroups).map((groupNum, ind) => {
         return (
           <div key={'gn_' + groupNum}>
-            <h1>{groupNum}</h1>
-            <span>😃: {progressSummery(progressArray[groupNum]).original}</span>
-            <span>😐: {progressSummery(progressArray[groupNum]).alternate}</span>
-            <span>😭: {progressSummery(progressArray[groupNum]).skipped}</span>
+            <div onClick={() => openClose(ind)}>
+              <h1>{groupNum}</h1>
+              <span>{progressArray[groupNum][lastActiveAction(groupNum)].creationTime} </span>
+              <span>😃: {progressSummery(progressArray[groupNum]).original} </span>
+              <span>😐: {progressSummery(progressArray[groupNum]).alternate} </span>
+              <span>😭: {progressSummery(progressArray[groupNum]).skipped} </span>
+            </div>
+            {isOpen[ind] &&
             <Progress
               progress={progressArray[groupNum]}
               liatURL={liatURL}
               firebase={firebase} >
             </Progress>
-            <br />
+            }
+            <hr/>
           </div>
         )
       })}
