@@ -11,8 +11,8 @@ check zoom and camera for more devices (iphone) - DONEEEEEEEEEEEEEEEEEEEEEEEEEEE
 sort teams by score for liat - DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 teacher to add winnig code (new component after progres finished) - and add finish time to OnlineStatus - X
 notify admin if no img - DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-admin - write something when emphty
+admin - write something when emphty - DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 seperate try again or switch - DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
-add leading zero to mins in admin
+add leading zero to mins in admin - DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 change win - DONEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE
 put links in bitly and update sheet
