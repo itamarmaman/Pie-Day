@@ -17,7 +17,7 @@ export default function Win({}) {
       /> : null}
       <h1>כל הכבוד!</h1>
       <h1>סיימתם את המסלול!</h1>
-      <h1>חזרו לנקודת הסיום</h1>
+      {/*<h1>חזרו לנקודת הסיום</h1>*/}
       <img src={PieGif} className="pie-gif" />
     </div>
   );
