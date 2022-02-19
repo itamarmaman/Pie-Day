@@ -10,14 +10,27 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
   // const [teamsArray, setTeamsArray] = useState({})
   const [isOpen, setIsOpen] = useState([])
   const [showImg, setShowImg] = useState(false)
-  const [reload, setReload] = useState(true)
+  const [reload, setReload] = useState(false)
 
 
   function convertTimeStamp(ts) {
     const d = ts.toDate();
     return (d.getHours() < 10 ? "0" : "") + d.getHours() + ":" + (d.getMinutes() < 10 ? "0" : "") + d.getMinutes();
   }
+
+
   useEffect(() => {
+    const interval = setInterval(() => {
+      setReload(reload=>!reload)
+      console.log('reloaded')
+    }, 10000)
+
+  }, [])
+
+
+  useEffect(() => {
+    console.log('start ',reload)
+
     const promises = firebase.loadAllTA().then((ta) => {
       return Object.keys(ta).map((groupNum) => {
         console.log('working on group', groupNum)
@@ -66,9 +79,8 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
         // newPA[groupNum] = Object.assign(emptyProgress, prgrs)
         console.log("new pa ", newPA)
         setProgressArray(newPA)
-        setIsOpen(Array(Object.keys(newPA).length).fill(false))
-
-
+        const newIsOpen = Array(Object.keys(newPA).length).fill(false).map((v, i)=>isOpen[i] || false)
+        setIsOpen(newIsOpen)
       })
     })
 
@@ -76,17 +88,10 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
 
 
 
-    console.log('finish')
+    console.log('finish isOpen', isOpen)
 
   }, [reload]);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setReload(!reload)
-      console.log('reloaded')
-    }, 10000)
-
-  }, [])
 
   function progressSummery(p) {
     console.log("progress summary", p)

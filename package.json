@@ -4,10 +4,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "firebase": "^7.5.0",
+    "firebase": "^8.10.0",
     "gh-pages": "^2.2.0",
-    "node-sass": "^4.13.0",
-    "progress-tracker": "^2.0.5",
+    "progress-tracker": "^2.0.7",
     "react": "^16.11.0",
     "react-confetti": "^5.0.1",
     "react-dom": "^16.11.0",
@@ -15,7 +14,8 @@
     "react-images-upload": "^1.2.7",
     "react-modal": "^3.11.1",
     "react-scripts": "3.2.0",
-    "react-use": "^13.8.1"
+    "react-use": "^13.8.1",
+    "sass": "^1.49.8"
   },
   "scripts": {
     "start": "react-scripts start",
