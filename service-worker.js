@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/Pie-Day/precache-manifest.e88a838be6b9da92a929db4e23c242af.js"
+  "/Pie-Day/precache-manifest.b12455bf6a8083daad663d0d1d1bbcb7.js"
 );
 
 self.addEventListener('message', (event) => {
