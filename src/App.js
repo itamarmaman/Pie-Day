@@ -96,15 +96,20 @@ export default function App({ firebase }) {
     return legIndex < teamsArray[groupNum].length - 1;
   }
 
-  function moveToNextLeg() {
-
-    firebase.events().add({
+  function moveToNextLeg(eventStatus) {
+    let eventObj = {
       groupNum: groupNum,
       legIndex: legIndex + 1,
       progress: progress,
       finish: !hasNextLeg(),
-      creationTime: firebase.TIMESTAMP()
-    })
+      creationTime: firebase.TIMESTAMP(),
+      orgQuestion: teamsArray[groupNum][legIndex].questionId
+    }
+    if (eventStatus !== "org") {
+      eventObj.altQuestion = teamsArray[groupNum][legIndex].alternateQuestionId
+    }
+    console.log('eventObj: ', eventObj)
+    firebase.events().add(eventObj)
       .then(function (docRef) {
         console.log("Document written with ID: ", docRef.id);
       })
@@ -126,22 +131,42 @@ export default function App({ firebase }) {
   function onOrginalCorrectAnswer() {
     progress[legIndex] = 3
     setProgress(progress)
-    moveToNextLeg()
+    moveToNextLeg("org")
   }
   function onAlternateCorrectAnswer() {
     progress[legIndex] = 2
     setProgress(progress)
-    moveToNextLeg()
+    moveToNextLeg("alt")
   }
   function onSkipingQuestion() {
     console.log("skiping")
     progress[legIndex] = 1
     setProgress(progress)
-    moveToNextLeg()
+    moveToNextLeg("skp")
   }
 
   function uploadImage(picture) {
     firebase.uploadImageForGroup(groupNum, legIndex, picture)
+  }
+
+  function progressSummery(p) {
+    console.log("progress summary", p)
+    const summary = p.reduce((acc, val) => {
+      if (val.value === 3) {
+        return { original: acc.original + 1, alternate: acc.alternate, skipped: acc.skipped }
+      }
+      if (val.value === 2) {
+        return { original: acc.original, alternate: acc.alternate + 1, skipped: acc.skipped }
+      }
+      if (val.value === 1) {
+        return { original: acc.original, alternate: acc.alternate, skipped: acc.skipped + 1 }
+      }
+      if (val.value === 0) {
+        return acc
+      }
+    }, { original: 0, alternate: 0, skipped: 0 })
+    console.log("summary", summary)
+    return summary;
   }
 
   if (admin) {
@@ -154,7 +179,7 @@ export default function App({ firebase }) {
       </div>
   }
   if (liatURL) {
-    return <OnlineStatus /*teamsArray={teamsArray}*/ firebase={firebase} liatURL={liatURL}></OnlineStatus>
+    return <OnlineStatus progressSummery={progressSummery} firebase={firebase} liatURL={liatURL}></OnlineStatus>
   }
   if (!groupNum) {
     return (
@@ -182,7 +207,7 @@ export default function App({ firebase }) {
           uploadImage={uploadImage}
         >
         </QuestionForm>
-        : <Win></Win>}
+        : <Win groupNum={groupNum} progress={progress} progressSummery={progressSummery}></Win>}
     </div>
   )
 }

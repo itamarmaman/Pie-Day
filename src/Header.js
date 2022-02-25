@@ -7,6 +7,7 @@ export default function Header({groupNum, progress}) {
   // const [groupProgress, setGroupProgress] = useState(progress.map(function (val, index) { return {value: val, leg: index}}))
 
   const groupProgress = progress.map(function (val, index) { return {value: val, leg: index}})
+  console.log('gp ',groupProgress)
 
   return (
     <div className="header">

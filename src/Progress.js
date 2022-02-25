@@ -31,7 +31,7 @@ export default function Progress({ progress, liatURL }) {
   function openModal(p) {
     setShowImg(true)
     if (liatURL && (p.value !== 0)) {
-      console.log("p: ",p)
+      console.log("p info: ",p)
       setIsOpen(true);
       setProgressInfo(p)
     }
@@ -87,7 +87,14 @@ export default function Progress({ progress, liatURL }) {
             <br/>
             <span>{progressInfo.creationTime}</span>
           </span>
+          <span></span>
         </h4>
+        {progressInfo.hasOwnProperty('altQuestion') ? 
+        <h4>
+          <span>שאלה מקורית: {progressInfo.orgQuestion}</span>
+          <br/>
+          <span>שאלה חלופית: {progressInfo.altQuestion}</span>
+        </h4> : <h4>שאלה: {progressInfo.orgQuestion}</h4>}
         <button onClick={() => {setProgressInfo(progress[progressInfo.leg + 1]); setShowImg(true)}} disabled={progressInfo.leg === 9 || (progress[progressInfo.leg + 1] && progress[progressInfo.leg + 1].value === 0) }>next</button>
         <button onClick={() => {setProgressInfo(progress[progressInfo.leg - 1]); setShowImg(true)}} disabled={progressInfo.leg === 0}>prev</button>
         

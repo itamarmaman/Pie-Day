@@ -4,7 +4,7 @@ import Progress from './Progress';
 import { useAsync } from 'react-use';
 import waitGif from './wait.gif'
 
-export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
+export default function OnlineStatus({ progressSummery, firebase, liatURL }) {
 
   const [progressArray, setProgressArray] = useState({})
   // const [teamsArray, setTeamsArray] = useState({})
@@ -44,14 +44,19 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
               const data = doc.data();
               const creationTime = convertTimeStamp(data.creationTime)
               console.log("data.creationTime", data.creationTime.toDate().toString())
-              return {
+              let eventObj = {
                 groupNum,
                 leg: data.legIndex - 1,
                 value: data.progress[data.legIndex - 1],
                 creationTime: creationTime,
                 finish: data.finish,
-                imageSrc: `https://firebasestorage.googleapis.com/v0/b/pie-day-91621.appspot.com/o/group_${groupNum}%2F${data.legIndex - 1}%2Fimage?alt=media&token=36ad5bab-a780-4e3c-a816-1b6444221339`
+                imageSrc: `https://firebasestorage.googleapis.com/v0/b/pie-day-91621.appspot.com/o/group_${groupNum}%2F${data.legIndex - 1}%2Fimage?alt=media&token=36ad5bab-a780-4e3c-a816-1b6444221339`,
+                orgQuestion: data.orgQuestion
               }
+              if (data.hasOwnProperty('altQuestion')) {
+                eventObj.altQuestion = data.altQuestion
+              }
+              return eventObj
             })
           }
           return { groupNum, progress }
@@ -92,27 +97,6 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
 
   }, [reload]);
 
-
-  function progressSummery(p) {
-    console.log("progress summary", p)
-    const summary = p.reduce((acc, val) => {
-      if (val.value === 3) {
-        return { original: acc.original + 1, alternate: acc.alternate, skipped: acc.skipped }
-      }
-      if (val.value === 2) {
-        return { original: acc.original, alternate: acc.alternate + 1, skipped: acc.skipped }
-      }
-      if (val.value === 1) {
-        return { original: acc.original, alternate: acc.alternate, skipped: acc.skipped + 1 }
-      }
-      if (val.value === 0) {
-        return acc
-      }
-    }, { original: 0, alternate: 0, skipped: 0 })
-    console.log("summary", summary)
-    return summary;
-  }
-
   function sortGroups(grpA, grpB) {
     const grpAStatus = progressSummery(progressArray[grpA])
     const grpBStatus = progressSummery(progressArray[grpB])
@@ -152,7 +136,7 @@ export default function OnlineStatus({ /*teamsArray,*/ firebase, liatURL }) {
               <div key={'gn_' + groupNum}>
                 <div onClick={() => openClose(ind)}>
                   <h1>{groupNum})
-              <span> {progressArray[groupNum][lastActiveAction(groupNum)].creationTime} </span>
+                    <span> {progressArray[groupNum][lastActiveAction(groupNum)].creationTime} </span>
                     <span>😃: {progressSummery(progressArray[groupNum]).original} </span>
                     <span>😐: {progressSummery(progressArray[groupNum]).alternate} </span>
                     <span>😭: {progressSummery(progressArray[groupNum]).skipped} </span>
