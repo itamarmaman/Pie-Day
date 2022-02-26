@@ -150,7 +150,7 @@ export default function App({ firebase }) {
   }
 
   function progressSummery(p) {
-    console.log("progress summary", p)
+    console.log('progressSummery')
     const summary = p.reduce((acc, val) => {
       if (val.value === 3) {
         return { original: acc.original + 1, alternate: acc.alternate, skipped: acc.skipped }
@@ -165,8 +165,12 @@ export default function App({ firebase }) {
         return acc
       }
     }, { original: 0, alternate: 0, skipped: 0 })
-    console.log("summary", summary)
     return summary;
+  }
+
+  function convertTimeStamp(ts) {
+    const d = ts.toDate();
+    return (d.getHours() < 10 ? "0" : "") + d.getHours() + ":" + (d.getMinutes() < 10 ? "0" : "") + d.getMinutes();
   }
 
   if (admin) {
@@ -179,7 +183,7 @@ export default function App({ firebase }) {
       </div>
   }
   if (liatURL) {
-    return <OnlineStatus progressSummery={progressSummery} firebase={firebase} liatURL={liatURL}></OnlineStatus>
+    return <OnlineStatus progressSummery={progressSummery} firebase={firebase} liatURL={liatURL} convertTimeStamp={convertTimeStamp}></OnlineStatus>
   }
   if (!groupNum) {
     return (
@@ -207,7 +211,7 @@ export default function App({ firebase }) {
           uploadImage={uploadImage}
         >
         </QuestionForm>
-        : <Win groupNum={groupNum} progress={progress} progressSummery={progressSummery}></Win>}
+        : <Win groupNum={groupNum} progress={progress} progressSummery={progressSummery} firebase={firebase} convertTimeStamp={convertTimeStamp}></Win>}
     </div>
   )
 }

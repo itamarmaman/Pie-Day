@@ -4,20 +4,13 @@ import Progress from './Progress';
 import { useAsync } from 'react-use';
 import waitGif from './wait.gif'
 
-export default function OnlineStatus({ progressSummery, firebase, liatURL }) {
+export default function OnlineStatus({ progressSummery, firebase, liatURL, convertTimeStamp }) {
 
   const [progressArray, setProgressArray] = useState({})
   // const [teamsArray, setTeamsArray] = useState({})
   const [isOpen, setIsOpen] = useState([])
   const [showImg, setShowImg] = useState(false)
   const [reload, setReload] = useState(false)
-
-
-  function convertTimeStamp(ts) {
-    const d = ts.toDate();
-    return (d.getHours() < 10 ? "0" : "") + d.getHours() + ":" + (d.getMinutes() < 10 ? "0" : "") + d.getMinutes();
-  }
-
 
   useEffect(() => {
     const interval = setInterval(() => {
