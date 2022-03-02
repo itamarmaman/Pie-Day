@@ -20,11 +20,35 @@ export default function OnlineStatus({ progressSummery, firebase, liatURL, conve
 
   }, [])
 
+  function deleteDoubles(fsArray) {
+    let a = fsArray.sort((obj1, obj2) => {
+      if (obj1.legIndex !== obj2.legIndex) {
+        return obj1.legIndex - obj2.legIndex
+      }
+      if (obj1.value !== obj2.value) {
+        return obj2.value - obj1.value
+      }
+      return obj2.creationTime - obj1.creationTime
+    }).slice()
 
+    let ad = a.filter((e, i, arr) => {
+      if (i === 0) {
+        return true
+      }
+      if (e.legIndex === arr[i-1].legIndex) {
+        return false
+      }
+      return true
+    })
+    return ad
+  }
+
+  
   useEffect(() => {
     console.log('start ',reload)
 
     const promises = firebase.loadAllTA().then((ta) => {
+      
       return Object.keys(ta).map((groupNum) => {
         console.log('working on group', groupNum)
         const querySnapshot = firebase.getAllEvenstForGroup(groupNum)
@@ -33,8 +57,11 @@ export default function OnlineStatus({ progressSummery, firebase, liatURL, conve
           let progress = { groupNum: groupNum, progress: [] }
 
           if (qs !== null && qs.docs.filter(doc => doc.data().legIndex > 0).length > 0) {
-            progress = qs.docs.filter(doc => doc.data().legIndex > 0).map(doc => {
-              const data = doc.data();
+            let e4group = qs.docs
+            e4group = e4group.map(doc => doc.data())
+            const e4groupD = deleteDoubles(e4group)
+            progress = e4groupD.filter(doc => doc.legIndex > 0).map(doc => {
+              const data = doc;
               const creationTime = convertTimeStamp(data.creationTime)
               console.log("data.creationTime", data.creationTime.toDate().toString())
               let eventObj = {
@@ -52,9 +79,11 @@ export default function OnlineStatus({ progressSummery, firebase, liatURL, conve
               return eventObj
             })
           }
+
           return { groupNum, progress }
         })
       })
+
     })
     console.log("promises ", promises)
     promises.then((ps) => {
