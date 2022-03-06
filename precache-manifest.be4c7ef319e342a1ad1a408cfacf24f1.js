@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "01b48f838f449c6b05ac1b170ff04ae7",
+    "revision": "a92275b0ff4a23a8fbc2d70d5b70e5a1",
     "url": "/Pie-Day/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Pie-Day/static/css/2.80b8ec58.chunk.css"
   },
   {
-    "revision": "fca93e691153b0b36dd6",
+    "revision": "094be657056218dd34ce",
     "url": "/Pie-Day/static/css/main.a218c07f.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/Pie-Day/static/js/2.8720e216.chunk.js"
   },
   {
-    "revision": "fca93e691153b0b36dd6",
-    "url": "/Pie-Day/static/js/main.d858d8f9.chunk.js"
+    "revision": "094be657056218dd34ce",
+    "url": "/Pie-Day/static/js/main.ecb031ae.chunk.js"
   },
   {
     "revision": "bd6f5e461dc367a8d923",
