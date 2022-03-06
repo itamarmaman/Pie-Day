@@ -35,15 +35,18 @@ export default function App({ firebase }) {
 
 
   function onGN(x) {
-    if (x == groupNum + '^' + btoa(groupNum)) {
+    const x_ = x.trim()
+    if (x_ == groupNum + '^' + btoa(groupNum)) {
       return
     };
-    console.log("GN ", x)
-    if (!x.includes('^')) {
+    console.log("GN ", x_)
+    const split = x_.indexOf('^')
+    if (split === -1) {
       return
     }
-    let gn = x.slice(0, x.indexOf('^'))
-    if (gn != atob(x.slice(x.indexOf('^') + 1))) {
+
+    const gn = x_.slice(0, split)
+    if (btoa(gn) !== x_.slice(split + 1)) {
       return
     }
     setGroupNum(gn)
