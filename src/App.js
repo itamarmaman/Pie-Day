@@ -35,22 +35,31 @@ export default function App({ firebase }) {
 
 
   function onGN(x) {
-    if (x == groupNum) return;
+    if (x == groupNum + '^' + btoa(groupNum)) {
+      return
+    };
     console.log("GN ", x)
-    setGroupNum(x)
+    if (!x.includes('^')) {
+      return
+    }
+    let gn = x.slice(0, x.indexOf('^'))
+    if (gn != atob(x.slice(x.indexOf('^') + 1))) {
+      return
+    }
+    setGroupNum(gn)
     setShowSpinner(true)
-    firebase.loadTA(x).then(async (ta) => {
+    firebase.loadTA(gn).then(async (ta) => {
       console.log("got teams array ", ta)
       setShowSpinner(false)
       setTeamsArray(ta)
 
-      const querySnapShot = await firebase.getLatestEventForGroup(x)
+      const querySnapShot = await firebase.getLatestEventForGroup(gn)
 
       if (querySnapShot == null) {
         setWelcome(true)
-        console.log("sending init event for group ", x)
+        console.log("sending init event for group ", gn)
         firebase.events().add({
-          groupNum: x,
+          groupNum: gn,
           legIndex: 0,
           progress: progress,
           finish: false,
@@ -66,6 +75,12 @@ export default function App({ firebase }) {
       } else {
 
         const event = querySnapShot.docs[0].data()
+        /*const event = querySnapShot.docs.filter((e, i, arr) => e.data().legIndex === arr[0].data().legIndex).sort((e1, e2) => {
+          if (e1.data().progress[legIndex - 1] === e2.data().progress[legIndex - 1]) {
+            return (e1.data().creationTime - e2.data().creationTime)
+          }
+          return (e2.data().progress[legIndex - 1] - e1.data().progress[legIndex - 1])
+        })[0].data()*/
         if(event.legIndex > 0  && hasCameraPermission) {
           setWelcome(false)
         }
@@ -188,7 +203,8 @@ export default function App({ firebase }) {
   if (!groupNum) {
     return (
       <div className="App">
-        <SelectGroup onGroupNum={onGN}></SelectGroup>
+        <h4>unavailable link</h4>
+        {/*<SelectGroup onGroupNum={onGN}></SelectGroup>*/}
       </div>
     );
   }
